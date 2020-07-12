@@ -1,29 +1,117 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import styled from 'styled-components'
 import List from './List'
+import {axiosWithAuth} from './utils/axiosWithAuth'
+import {useHistory} from 'react-router-dom'
 
-const Dashboard = () => {
 
+const Dashboard = ({user, setUser, setCurrentFriend}) => {
 
-    const [lists, setLists] = useState(['Fast Food', 'Restaurants', 'Wishlist'])
+    const history = useHistory();
 
+    const [lists, setLists] = useState([])
+    const [add, setAdd] = useState(false)
+    const [isAddingFriend, setIsAddingFriend] = useState(false)
+    const [listName, setListName] = useState('');
+    const [friends, setFriends] = useState([])
+    const [friend, setFriend] = useState('')
+
+    useEffect(()=>{
+        if(Object.keys(user).length === 0){
+            axiosWithAuth().get('/api/auth')
+                .then(res=>setUser(res.data[0]))
+                .catch(err=>console.log(err))
+        }
+
+        axiosWithAuth().get('/api/lists')
+            .then(res=>setLists(res.data))
+            .catch(err=>console.log(err))
+
+        axiosWithAuth().get('/api/friends')
+            .then(res=>setFriends(res.data))
+            .catch(err=>console.log(err))
+    },[])
+
+    const handleChange = e => {
+        setListName(e.target.value)
+    }
+    const handleChangeFriend = e => {
+        setFriend(e.target.value)
+    }
+
+    const onSubmit = e => {
+        e.preventDefault()
+        axiosWithAuth().post('/api/lists', {name: listName})
+            .then(res=>{
+                axiosWithAuth().get('/api/lists')
+            .then(res=>{
+                setLists(res.data)
+                setListName('')
+            })
+            .catch(err=>console.log(err))
+
+            })
+            .catch(err=>console.log(err))
+    }
+
+    const onSubmitFriend = e =>{
+        e.preventDefault();
+        console.log(friend)
+        axiosWithAuth().post('/api/friends', {user: friend})
+            .then(res=>setFriends([...friends, {friend_name: friend}]))
+            .catch(err=>console.log(err))
+    }
+
+    const deleteFriend = (id, name) => {
+        console.log('id', id)
+        axiosWithAuth().delete(`/api/friends/${id}`)
+            .then(res=>setFriends(friends.filter(friend=>friend.friend_name !== name)))
+            .catch(err=>console.log(err))
+    }
 
     return(
         <Container>
             <UserPanel>
-                <Title>Welcome Janet!</Title>
+                <Title>Welcome {user.username}</Title>
                 <ImgDiv>
-                    <Img src={'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80'}/>
+                    <Img src={user.img_url}/>
+                    <button onClick={()=>history.push('/profile')}>Edit Profile</button>
+                    <button onClick={()=>setAdd(!add)}>Add a List</button>
+                    <button onClick={()=>setIsAddingFriend(!isAddingFriend)}>Add Friend</button>
                 </ImgDiv>
+                {add && <form onSubmit={onSubmit}>
+                    <input name="name" placeholder="name" onChange={handleChange} value={listName}/>
+                    <button>Add</button>
+                </form>}
+                {isAddingFriend && <form onSubmit={onSubmitFriend}>
+                    <input name="username" placeholder="username" onChange={handleChangeFriend} value={friend}/>
+                    <button>Add</button>
+                </form>}
                 <Menus>
                     <Subtitle>My Lists</Subtitle>
                     <Lists>
-                        {lists.map(list=><ListNames>{list}</ListNames>)}
+                        {lists.map(list=><ListNames key={list.id}>{list.name}</ListNames>)}
+                    </Lists>
+                </Menus>
+                <Menus>
+                    <Subtitle>My Friends</Subtitle>
+                    <Lists>
+                        {friends.map(friend=>{
+                            return (
+                                <div>
+                                    <ListNames onClick={()=>{
+                                        setCurrentFriend(friend.friend_id)
+                                        history.push(`/friend/${friend.friend_name}`)
+                                    }} key={friend.friend_id}>{friend.friend_name}</ListNames>
+                                    <button onClick={()=>deleteFriend(friend.friend_id, friend.friend_name)}>X</button>
+                                </div>
+                            )
+                        })}
                     </Lists>
                 </Menus>
             </UserPanel>
             <ListContainer>
-                <List/>
+                {lists.map(list=><List key={list.id} list={list} isFriend={false}/>)}
             </ListContainer>
         </Container>
     )
@@ -33,6 +121,7 @@ export default Dashboard
 
 const Container = styled.div`
     display: flex;
+    margin-bottom: 5%;
 `;
 
 const ListContainer = styled.div`
@@ -66,6 +155,7 @@ const ImgDiv = styled.div``;
 const Img = styled.img`
     width: 175px;
     border-radius: 100%;
+    background-position: 50% 50%;
     height: 175px;
     margin: 8% 0;
 `;

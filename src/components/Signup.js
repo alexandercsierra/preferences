@@ -1,9 +1,11 @@
 import React, {useState} from 'react'
 import styled from 'styled-components'
-
+import {useHistory} from 'react-router-dom'
+import axios from 'axios'
 
 const Signup = () => {
 
+    const history = useHistory();
 
     const [user, setUser] = useState({
         name: '',
@@ -13,14 +15,27 @@ const Signup = () => {
     })
 
 
-    const handleChange = () => {
-        return 1;
+    const handleChange = e => {
+        setUser({
+            ...user,
+            [e.target.name]: e.target.value
+        })
+    }
+
+    const onSubmit = e => {
+        e.preventDefault()
+        axios.post('http://localhost:7000/api/auth/register', user)
+            .then(res=>{
+                console.log(res)
+                history.push('/login')
+            })
+            .catch(err=>console.log(err))
     }
 
     return(
         <Container>
             <Title>Get Started Today!</Title>
-            <Form>
+            <Form onSubmit={onSubmit}>
                 <Label>Name</Label>
                 <Input name="name" placeholder="name" onChange={handleChange} value={user.name}/>
                 <Label>Email</Label>
@@ -28,7 +43,7 @@ const Signup = () => {
                 <Label>Username</Label>
                 <Input name="username" placeholder="username" onChange={handleChange} value={user.username}/>
                 <Label>Password</Label>
-                <Input name="password" placeholder="password" onChange={handleChange} value={user.password}/>
+                <Input type="password" name="password" placeholder="password" onChange={handleChange} value={user.password}/>
                 <Button>SUBMIT</Button>
             </Form>
         </Container>

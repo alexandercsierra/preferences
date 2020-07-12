@@ -1,7 +1,11 @@
 import React, {useState} from 'react'
 import styled from 'styled-components'
+import axios from 'axios'
+import {useHistory, withRouter} from 'react-router-dom'
 
-const Login = () => {
+const Login = ({setCurrentUser}) => {
+
+    const history = useHistory()
 
     const [user, setUser] = useState({
         username: '',
@@ -9,8 +13,23 @@ const Login = () => {
     })
 
 
-    const handleChange = () => {
-        return 1;
+    const handleChange = e => {
+        setUser({
+            ...user,
+            [e.target.name]: e.target.value
+        })
+    }
+
+    const onSubmit = e => {
+        e.preventDefault()
+        axios.post('http://localhost:7000/api/auth/login', user)
+            .then(res=>{
+                console.log(res)
+                setCurrentUser(res.data.user)
+                localStorage.setItem('token', res.data.token)
+                history.push('/dashboard')
+            })
+            .catch(err=>console.log(err))
     }
 
 
@@ -19,11 +38,11 @@ const Login = () => {
     return(
         <Container>
             <Title>Welcome Back!</Title>
-            <Form>
+            <Form onSubmit={onSubmit}>
                 <Label>Username</Label>
                 <Input name="username" placeholder="username" onChange={handleChange} value={user.username}/>
                 <Label>Password</Label>
-                <Input name="password" placeholder="password" onChange={handleChange} value={user.password}/>
+                <Input type="password" name="password" placeholder="password" onChange={handleChange} value={user.password}/>
                 <Button>LOGIN</Button>
             </Form>
         </Container>
