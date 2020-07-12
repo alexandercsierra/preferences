@@ -43,8 +43,8 @@ const Dashboard = ({user, setUser, setCurrentFriend}) => {
         setFriend(e.target.value)
     }
 
-    const onSubmit = e => {
-        e.preventDefault()
+    const onSubmit = () => {
+        // e.preventDefault()
         axiosWithAuth().post('/api/lists', {name: listName})
             .then(res=>{
                 axiosWithAuth().get('/api/lists')
@@ -58,8 +58,8 @@ const Dashboard = ({user, setUser, setCurrentFriend}) => {
             .catch(err=>console.log(err))
     }
 
-    const onSubmitFriend = e =>{
-        e.preventDefault();
+    const onSubmitFriend = () =>{
+        // e.preventDefault();
         console.log(friend)
         axiosWithAuth().post('/api/friends', {user: friend})
             .then(res=>setFriends([...friends, {friend_name: friend}]))
@@ -73,12 +73,18 @@ const Dashboard = ({user, setUser, setCurrentFriend}) => {
             .catch(err=>console.log(err))
     }
 
+    const deleteList = (id) => {
+        axiosWithAuth().delete(`/api/lists/${id}`)
+            .then(res=>setLists(lists.filter(list=>list.id !== id)))
+            .catch(err=>console.log(err))
+    }
+
     return(
         <Container>
             <UserPanel>
                 <TopTitleDiv>
                     <Title>Welcome {user.username}</Title>
-                    <i class="fas fa-pen" onClick={()=>history.push('/profile')}></i>
+                    <i className="fas fa-pen" onClick={()=>history.push('/profile')}></i>
                 </TopTitleDiv>
                 <ImgDiv>
                     <Img src={user.img_url}/>
@@ -97,35 +103,43 @@ const Dashboard = ({user, setUser, setCurrentFriend}) => {
                 <Menus>
                     <TitleDiv>
                         <Subtitle>My Lists</Subtitle>
-                        <i class="fas fa-plus-circle" onClick={()=>{
+                        <i className="fas fa-plus-circle" onClick={()=>{
                             setWhichForm('list')
                             setIsOpenList(true)
                         }}></i>
-                        <Modal isOpen={isOpenList} setIsOpen={setIsOpenList} whichForm={whichForm}/>
+                        <Modal isOpen={isOpenList} setIsOpen={setIsOpenList} whichForm={whichForm} handleChange={handleChange} onSubmit={onSubmit} listName={listName}/>
                     </TitleDiv>
                     <Lists>
-                        {lists.map(list=><ListNames key={list.id}>{list.name}</ListNames>)}
+                        {lists.map(list=>{
+                            return(
+                                <FriendDiv>
+                                    <ListNames key={list.id}>{list.name}</ListNames>
+                                    <i className="fas fa-times-circle" onClick={()=>deleteList(list.id)}></i>
+                                </FriendDiv>
+
+                            )
+                        })}
                     </Lists>
                 </Menus>
                 <Menus>
                 <TitleDiv>
                         <Subtitle>My Friends</Subtitle>
-                        <i class="fas fa-plus-circle" onClick={()=>{
+                        <i className="fas fa-plus-circle" onClick={()=>{
                             setWhichForm('friend')
                             setIsOpenFriend(true)
                         }}></i>
-                        <Modal isOpen={isOpenFriend} setIsOpen={setIsOpenFriend} whichForm={whichForm}/>
+                        <Modal isOpen={isOpenFriend} setIsOpen={setIsOpenFriend} whichForm={whichForm} handleChangeFriend={handleChangeFriend} friend={friend} onSubmitFriend={onSubmitFriend}/>
                     </TitleDiv>
                     <Lists>
                         {friends.map(friend=>{
                             return (
-                                <div>
+                                <FriendDiv>
                                     <ListNames onClick={()=>{
                                         setCurrentFriend(friend.friend_id)
                                         history.push(`/friend/${friend.friend_name}`)
                                     }} key={friend.friend_id}>{friend.friend_name}</ListNames>
-                                    <button onClick={()=>deleteFriend(friend.friend_id, friend.friend_name)}>X</button>
-                                </div>
+                                    <i className="fas fa-times-circle" onClick={()=>deleteFriend(friend.friend_id, friend.friend_name)}></i>
+                                </FriendDiv>
                             )
                         })}
                     </Lists>
@@ -143,6 +157,9 @@ export default Dashboard
 const Container = styled.div`
     display: flex;
     margin-bottom: 5%;
+    @media(max-width: 630px){
+        flex-direction: column;
+    }
 `;
 
 const TopTitleDiv = styled.div`
@@ -162,7 +179,9 @@ const TitleDiv = styled.div`
 const ListContainer = styled.div`
     width: 60%;
     height: 100vh;
-    // border: 1px solid red;
+    @media(max-width: 630px){
+        width: 100%;
+    }
 `;
 
 const UserPanel = styled.div`
@@ -173,12 +192,23 @@ const UserPanel = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+    @media(max-width: 630px){
+        width: 100%;
+        height: 75vh;
+    }
 `;
 
 const Title = styled.h1`
     font-size: 1.5rem;
+    text-align: center;
     margin: 6% 0;
     // border: 1px solid red;
+    @media(max-width: 1000px){
+        font-size: 1rem;
+    }
+    @media(max-width: 630px){
+        font-size: 1.5rem;
+    }
 `;
 
 const Subtitle = styled.p`
@@ -210,4 +240,17 @@ const Lists = styled.div`
     margin: 5% 15%;
 `;
 
-const ListNames = styled.p``;
+const ListNames = styled.p`
+    // border: 1px solid red;
+    width: 80%;
+    padding: 4%;
+    margin: 0;
+`;
+
+const FriendDiv = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    // border: 1px solid red;
+    padding: 0;
+`;

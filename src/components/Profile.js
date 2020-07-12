@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import {axiosWithAuth} from './utils/axiosWithAuth'
+import styled from 'styled-components'
 
 const Profile = ({user, setUser}) => {
 
@@ -8,7 +9,7 @@ const Profile = ({user, setUser}) => {
     const [profile, setProfile] = useState({
         name: user.name,
         email: user.email,
-        img_url: user.img_url
+        img_url: ''
     })
 
     const [img, setImg] = useState({
@@ -45,24 +46,24 @@ const Profile = ({user, setUser}) => {
     }
 
     return (
-        <div>
+        <div style={{height: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
             <h1>Profile</h1>
-            <div>
+            <div style={{textAlign: 'center', margin: '4% 0'}}>
                 <h4>{user.name}</h4>
                 <p>{user.email}</p>
             </div>
-            <div>
+            <div style={{width: '50%'}}>
                 <img src={user.img_url}/>
             </div>
-            <div>
-                <button onClick={()=>setIsEditing(!isEditing)}>Edit Profile</button>
-            </div>
+            <ButtonDiv>
+                <Button onClick={()=>setIsEditing(!isEditing)} style={{width: '100%'}}>Edit Profile Picture</Button>
+            </ButtonDiv>
             <div>
                 {isEditing && <form onSubmit={onSubmit}>
                     {/* <input name="name" placeholder="name" onChange={handleChange} value={profile.name}/> */}
                     {/* <input name="email" placeholder="email" onChange={handleChange} value={profile.email}/> */}
-                    <input name="img_url" placeholder="img_url" onChange={handleChange} value={img.img_url}/>
-                    <button>Save Changes</button>
+                    <Input name="img_url" placeholder="img_url" onChange={handleChange} value={img.img_url}/>
+                    <Button>Save Changes</Button>
                 </form>}
             </div>
         </div>
@@ -70,3 +71,28 @@ const Profile = ({user, setUser}) => {
 }
 
 export default Profile
+
+const ButtonDiv = styled.div`
+    width: 30%;
+    margin: 4% 0;
+    @media(max-width: 700px){
+        width: 50%;
+    }
+`;
+
+const Button = styled.button`
+    background: #f1f1f1;
+    padding: 2%;
+    border: 1px solid #111725;
+    border-radius: 5px;
+    color: #111725;
+    font-weight: 800;
+
+`;
+
+const Input = styled.input`
+    width: 100%;
+    margin-bottom: 6%;
+    padding: 4%;
+    border-radius: 10px;
+`;

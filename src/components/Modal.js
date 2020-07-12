@@ -7,7 +7,13 @@ const ModalExample = (props) => {
       className,
       isOpen,
       setIsOpen,
-      whichForm
+      whichForm,
+      handleChange,
+      onSubmit,
+      listName,
+      handleChangeFriend,
+      friend,
+      onSubmitFriend
     } = props;
   
     const [modal, setModal] = useState(false);
@@ -20,7 +26,7 @@ const ModalExample = (props) => {
     }
   
     return (
-        <div>
+        <div style={{maxWidth: '100%'}}>
             {/* <Form inline onSubmit={(e) => e.preventDefault()}>
                 <FormGroup>
                     <Label for="unmountOnClose">UnmountOnClose value</Label>{' '}
@@ -33,22 +39,28 @@ const ModalExample = (props) => {
                 <Button color="danger" onClick={toggle}>{buttonLabel}</Button>
             </Form> */}
             {whichForm === "list" && <Modal isOpen={isOpen} toggle={toggle} className={className} unmountOnClose={unmountOnClose}>
-                <ModalHeader toggle={toggle}>Modal title</ModalHeader>
+                <ModalHeader toggle={toggle}>Add New List</ModalHeader>
                 <ModalBody>
-                    <Input type="textarea" placeholder="Add a list" rows={5} />
+                    <Input type="text" placeholder="list name" onChange={handleChange} value={listName}/>
                 </ModalBody>
                 <ModalFooter>
-                    <Button color="primary" onClick={toggle}>Do Something</Button>{' '}
+                    <Button color="primary" onClick={()=>{
+                        onSubmit()
+                        toggle()
+                    }}>Add</Button>{' '}
                     <Button color="secondary" onClick={toggle}>Cancel</Button>
                 </ModalFooter>
             </Modal>}
             {whichForm === "friend" && <Modal isOpen={isOpen} toggle={toggle} className={className} unmountOnClose={unmountOnClose}>
-                <ModalHeader toggle={toggle}>Modal title</ModalHeader>
+                <ModalHeader toggle={toggle}>Add New Friend</ModalHeader>
                 <ModalBody>
-                    <Input type="textarea" placeholder="Add a friend" rows={5} />
+                    <Input type="text" placeholder="username of friend" onChange={handleChangeFriend} value={friend}/>
                 </ModalBody>
                 <ModalFooter>
-                    <Button color="primary" onClick={toggle}>Do Something</Button>{' '}
+                    <Button color="primary" onClick={()=>{
+                        onSubmitFriend()
+                        toggle()
+                    }}>Follow Friend</Button>{' '}
                     <Button color="secondary" onClick={toggle}>Cancel</Button>
                 </ModalFooter>
             </Modal>}
