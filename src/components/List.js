@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import styled from 'styled-components'
 import {axiosWithAuth} from './utils/axiosWithAuth'
+import Item from './Item'
 
 const List = ({list, isFriend}) => {
 
@@ -59,11 +60,12 @@ const List = ({list, isFriend}) => {
             <ItemsDiv style={{flexDirection: 'column'}}>
 
             {items.map(item=>{
-                return <ItemsDiv key={item.item_name}>
-                    <Amount>{`${item.quantity} x`}</Amount>
-                    <ItemName>{item.item_name}</ItemName>
-                    <i className="fas fa-times-circle" onClick={()=>deleteItem(item.item_id)}></i>
-                </ItemsDiv>
+                return <Item isFriend={isFriend} item={item} deleteItem={deleteItem}/>
+                // return <ItemsDiv key={item.item_name}>
+                //     <Amount>{`${item.quantity} x`}</Amount>
+                //     <ItemName>{item.item_name}</ItemName>
+                //     <i className="fas fa-times-circle" onClick={()=>deleteItem(item.item_id)}></i>
+                // </ItemsDiv>
             })}
                 {!isFriend && <Button style={{margin: '4% auto', width: '50%'}} onClick={()=>{
                     setIsAdding(!isAdding)
@@ -93,6 +95,9 @@ const Container = styled.div`
     flex-direction: column;
     width: 60%;
     margin: 0 auto;
+    @media(max-width: 970px){
+        width: 80%;
+    }
 `;
 
 const Title = styled.h1`

@@ -57,11 +57,13 @@ const Container = styled.div`
     // justify-content: center;
     align-items: center;
     flex-direction: column;
-    margin: 6% 0;
+    // margin: 6% 0;
     height: 100vh;
 `;
 
-const Title = styled.h1``;
+const Title = styled.h1`
+    margin-top: 10vh;
+`;
 
 const Form = styled.form`
     display: flex;

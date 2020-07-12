@@ -54,6 +54,9 @@ const TextDiv = styled.div`
 
 const Title = styled.h1`
     margin-bottom: 10%;
+    @media(max-width: 970px){
+        margin-top: 10vh;
+    }
 `;
 
 const Text = styled.p``;

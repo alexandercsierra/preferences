@@ -157,7 +157,7 @@ export default Dashboard
 const Container = styled.div`
     display: flex;
     margin-bottom: 5%;
-    @media(max-width: 630px){
+    @media(max-width: 970px){
         flex-direction: column;
     }
 `;
@@ -167,6 +167,9 @@ const TopTitleDiv = styled.div`
     justify-content: center;
     align-items: center;
     width: 100%;
+    @media(max-width: 970px){
+        margin-top: 10vh;
+    }
 `;
 
 const TitleDiv = styled.div`
@@ -179,8 +182,10 @@ const TitleDiv = styled.div`
 const ListContainer = styled.div`
     width: 60%;
     height: 100vh;
-    @media(max-width: 630px){
+    @media(max-width: 970px){
         width: 100%;
+        height: auto;
+        margin-bottom: 20%;
     }
 `;
 
@@ -192,9 +197,9 @@ const UserPanel = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    @media(max-width: 630px){
+    @media(max-width: 970px){
         width: 100%;
-        height: 75vh;
+        height: auto;
     }
 `;
 
@@ -212,9 +217,10 @@ const Title = styled.h1`
 `;
 
 const Subtitle = styled.p`
-    font-size: 1.2rem;
+    font-size: 1.5rem;
     align-self: flex-start;
     margin: 2%;
+    font-weight: 700;
 `;
 
 const ImgDiv = styled.div`
@@ -242,6 +248,7 @@ const Lists = styled.div`
 
 const ListNames = styled.p`
     // border: 1px solid red;
+    font-size: 1.2rem;
     width: 80%;
     padding: 4%;
     margin: 0;
