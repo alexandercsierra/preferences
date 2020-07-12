@@ -36,3 +36,15 @@
     transform: rotate(360deg);
   }
 }
+
+.fa-plus-circle{
+  color: green;
+}
+
+.fa-pen{
+  margin-left: 2%;
+  /* border: 1px solid green; */
+  font-size: 1.2rem;
+  cursor: pointer;
+
+}

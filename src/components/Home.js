@@ -23,6 +23,11 @@ const Home = () => {
             <InstructionCard title={'2. Create a List'}/>
             <InstructionCard title={'3. Add Friends'}/>
         </Section>
+        <Section>
+            <div style={{height: '500px', width: '500px'}}>
+
+            </div>
+        </Section>
         </>
     )
 }
@@ -31,11 +36,20 @@ export default Home
 
 const Header = styled.header`
     display: flex;
+    justify-content: center;
+    align-items: center;
+    @media(max-width: 970px){
+        flex-direction: column;
+    }
 `;
 
 const TextDiv = styled.div`
     width: 50%;
     padding: 4%;
+    @media(max-width: 970px){
+        width: 80%;
+    }
+    
 `;
 
 const Title = styled.h1`
@@ -49,6 +63,9 @@ const ImageDiv = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+    @media(max-width: 970px){
+        width: 80%;
+    }
 `;
 
 const CircleDiv = styled.div`
@@ -72,4 +89,8 @@ const Section = styled.section`
     display: flex;
     justify-content: space-around;
     margin-top: 10%;
+
+    @media(max-width: 970px){
+        flex-direction: column;
+    }
 `;

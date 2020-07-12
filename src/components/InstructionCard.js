@@ -21,6 +21,13 @@ const OuterSquare = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+    @media(max-width: 970px){
+        width: 50%;
+        margin: 4% auto;
+    }
+    @media(max-width: 550px){
+        width: 80%;
+    }
 `;
 
 const InnerSquare = styled.div`
@@ -32,6 +39,10 @@ const InnerSquare = styled.div`
     display: flex;
     justify-content: center;
     // align-items: center;
+    @media(max-width: 970px){
+        width: 90%;
+        margin: 4% auto;
+    }
 `;
 
 const Title = styled.h1``;

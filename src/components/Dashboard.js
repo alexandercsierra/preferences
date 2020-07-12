@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import styled from 'styled-components'
 import List from './List'
+import Modal from './Modal'
 import {axiosWithAuth} from './utils/axiosWithAuth'
 import {useHistory} from 'react-router-dom'
 
@@ -15,6 +16,9 @@ const Dashboard = ({user, setUser, setCurrentFriend}) => {
     const [listName, setListName] = useState('');
     const [friends, setFriends] = useState([])
     const [friend, setFriend] = useState('')
+    const [isOpenList, setIsOpenList] = useState(false)
+    const [isOpenFriend, setIsOpenFriend] = useState(false)
+    const [whichForm, setWhichForm] = useState('')
 
     useEffect(()=>{
         if(Object.keys(user).length === 0){
@@ -72,12 +76,15 @@ const Dashboard = ({user, setUser, setCurrentFriend}) => {
     return(
         <Container>
             <UserPanel>
-                <Title>Welcome {user.username}</Title>
+                <TopTitleDiv>
+                    <Title>Welcome {user.username}</Title>
+                    <i class="fas fa-pen" onClick={()=>history.push('/profile')}></i>
+                </TopTitleDiv>
                 <ImgDiv>
                     <Img src={user.img_url}/>
-                    <button onClick={()=>history.push('/profile')}>Edit Profile</button>
-                    <button onClick={()=>setAdd(!add)}>Add a List</button>
-                    <button onClick={()=>setIsAddingFriend(!isAddingFriend)}>Add Friend</button>
+                    {/* <button onClick={()=>history.push('/profile')}>Edit Profile</button> */}
+                    {/* <button onClick={()=>setAdd(!add)}>Add a List</button>
+                    <button onClick={()=>setIsAddingFriend(!isAddingFriend)}>Add Friend</button> */}
                 </ImgDiv>
                 {add && <form onSubmit={onSubmit}>
                     <input name="name" placeholder="name" onChange={handleChange} value={listName}/>
@@ -88,13 +95,27 @@ const Dashboard = ({user, setUser, setCurrentFriend}) => {
                     <button>Add</button>
                 </form>}
                 <Menus>
-                    <Subtitle>My Lists</Subtitle>
+                    <TitleDiv>
+                        <Subtitle>My Lists</Subtitle>
+                        <i class="fas fa-plus-circle" onClick={()=>{
+                            setWhichForm('list')
+                            setIsOpenList(true)
+                        }}></i>
+                        <Modal isOpen={isOpenList} setIsOpen={setIsOpenList} whichForm={whichForm}/>
+                    </TitleDiv>
                     <Lists>
                         {lists.map(list=><ListNames key={list.id}>{list.name}</ListNames>)}
                     </Lists>
                 </Menus>
                 <Menus>
-                    <Subtitle>My Friends</Subtitle>
+                <TitleDiv>
+                        <Subtitle>My Friends</Subtitle>
+                        <i class="fas fa-plus-circle" onClick={()=>{
+                            setWhichForm('friend')
+                            setIsOpenFriend(true)
+                        }}></i>
+                        <Modal isOpen={isOpenFriend} setIsOpen={setIsOpenFriend} whichForm={whichForm}/>
+                    </TitleDiv>
                     <Lists>
                         {friends.map(friend=>{
                             return (
@@ -124,6 +145,20 @@ const Container = styled.div`
     margin-bottom: 5%;
 `;
 
+const TopTitleDiv = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+`;
+
+const TitleDiv = styled.div`
+    display: flex;
+    // justify-content: center;
+    align-items: center;
+    width: 100%;
+`;
+
 const ListContainer = styled.div`
     width: 60%;
     height: 100vh;
@@ -143,14 +178,18 @@ const UserPanel = styled.div`
 const Title = styled.h1`
     font-size: 1.5rem;
     margin: 6% 0;
+    // border: 1px solid red;
 `;
 
 const Subtitle = styled.p`
     font-size: 1.2rem;
     align-self: flex-start;
+    margin: 2%;
 `;
 
-const ImgDiv = styled.div``;
+const ImgDiv = styled.div`
+    margin-bottom: 15%;
+`;
 
 const Img = styled.img`
     width: 175px;

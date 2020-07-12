@@ -54,10 +54,11 @@ export default Signup
 
 const Container = styled.div`
     display: flex;
-    justify-content: center;
+    // justify-content: center;
     align-items: center;
     flex-direction: column;
     margin: 6% 0;
+    height: 100vh;
 `;
 
 const Title = styled.h1``;
@@ -69,6 +70,14 @@ const Form = styled.form`
     align-items: center;
     width: 30%;
     margin: 6% auto;
+
+    @media(max-width: 970px){
+        width: 50%;
+    }
+    @media(max-width: 500px){
+        width: 90%;
+    }
+
 `;
 
 const Label = styled.label`
