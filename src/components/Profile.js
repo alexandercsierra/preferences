@@ -9,7 +9,7 @@ const Profile = ({user, setUser}) => {
     const [profile, setProfile] = useState({
         name: user.name,
         email: user.email,
-        img_url: ''
+        img_url: user.img_url
     })
 
     const [img, setImg] = useState({

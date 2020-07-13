@@ -9,8 +9,12 @@ const FriendsList = ({currentFriend}) => {
     const {name} = useParams()
 
     const [lists, setLists] = useState([])
+    const [search, setSearch] = useState('')
+    const [filtered, setFiltered] = useState(lists)
+    const [friendPic, setFriendPic] = useState('')
 
     useEffect(()=>{
+        window.scrollTo(0, 0)
         let currFriend = 0;
         if(currentFriend){
             localStorage.setItem('currentFriend', currentFriend)
@@ -19,16 +23,44 @@ const FriendsList = ({currentFriend}) => {
             currFriend = localStorage.getItem('currentFriend')
         }
         axiosWithAuth().get(`/api/lists/${currFriend}`)
-            .then(res=>setLists(res.data))
+            .then(res=>{
+                setLists(res.data)
+                setFiltered(res.data)
+                axiosWithAuth().get(`/api/auth/img/${currFriend}`)
+                    .then(res=>setFriendPic(res.data.img_url))
+                    .catch(err=>console.log(err))
+            })
             .catch(err=>console.log(err))
     },[])
+
+    const handleChange = e => {
+        setSearch(e.target.value)
+    }
+
+    const onSubmit = e => {
+        e.preventDefault()
+        setFiltered(lists.filter(list=>list.name.toLowerCase().includes(search.toLowerCase())))
+        setSearch("")
+    }
 
 
     return (
         <Container>
-            <Title>{name}'s Lists</Title>
+            <UserDiv>
+                <ImgDiv>
+                    <Img src={friendPic}/>
+                </ImgDiv>
+                <Title>{name}'s Lists</Title>
+            </UserDiv>
+            <SearchDiv>
+                <Form onSubmit={onSubmit}>
+                    <Input onChange={handleChange} placeholder='search' value={search}/>
+                    <SubmitButton>Submit</SubmitButton>
+                </Form>
+            </SearchDiv>
+                    <Button onClick={()=>setFiltered(lists)}>See All</Button>
             <ListContainer>
-                {lists.map(list=><List key={list.id} list={list} isFriend={true}/>)}
+                {filtered.map(list=><List key={list.id} list={list} isFriend={true}/>)}
             </ListContainer>
         </Container>
     )
@@ -40,14 +72,67 @@ const Container = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: center;
-    
+`;
+
+const UserDiv = styled.div`
+    display: flex;
+    justify-content: center;
+    margin-top: 10vh;
+
+`;
+
+const SearchDiv = styled.div`
+    display: flex;
+    justify-content: center;
+`;
+
+const Form = styled.form`
+    display: flex;
+`;
+
+const Input = styled.input`
+    width: 80%;
+    margin-bottom: 6%;
+    padding: 4%;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+`;
+
+const SubmitButton = styled.button`
+    width: 30%;
+    margin-bottom: 6%;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    `;
+
+const Button = styled.button`
+    margin: 0 auto;
+    width: 25%;
+    border-radius: 10px;
+    font-size: 1rem;
 `;
 
 const ListContainer = styled.div`
-    min-height: 100vh;
+    min-height: 90vh;
 `;
 
 const Title = styled.h1`
-    margin: 10vh auto;
+    margin: 0 auto;
     margin-bottom: 4%;
+    width: 70%;
+`;
+
+const ImgDiv = styled.div`
+    margin-left: 4%;
+    margin-bottom: 15%;
+    width: 75px;
+    height: 75px;
+    box-shadow: 0.3em 0.3em 1em rgba(0,0,0,0.3);
+    overflow: hidden;
+    border-radius: 100%;
+`;
+
+const Img = styled.img`
+    background-size: cover;
+    background-position: 50% 50%;
 `;

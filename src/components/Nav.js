@@ -17,14 +17,13 @@ const Nav = () => {
         unCheck()
     },[location])
 
-    console.log(location)
     return(
         
         <div>
             <MobileContainer>
-                <input type="checkbox" class="blue" id="menu" checked={checked} onClick={()=>setChecked(!checked)}/>
-                <label for="menu" class="icon">
-                    <div class="menu"></div>
+                <input type="checkbox" className="blue" id="menu" checked={checked} onClick={()=>setChecked(!checked)}/>
+                <label htmlFor="menu" className="icon">
+                    <div className="menu"></div>
                 </label>
                 <MobileNav>
                     <TheLinks to="/" exact={true} onClick={unCheck}>HOME</TheLinks>

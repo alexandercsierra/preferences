@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import styled from 'styled-components'
 import List from './List'
+import ListName from './ListName'
 import Modal from './Modal'
 import {axiosWithAuth} from './utils/axiosWithAuth'
 import {useHistory} from 'react-router-dom'
@@ -11,14 +12,36 @@ const Dashboard = ({user, setUser, setCurrentFriend}) => {
     const history = useHistory();
 
     const [lists, setLists] = useState([])
-    const [add, setAdd] = useState(false)
-    const [isAddingFriend, setIsAddingFriend] = useState(false)
     const [listName, setListName] = useState('');
     const [friends, setFriends] = useState([])
     const [friend, setFriend] = useState('')
     const [isOpenList, setIsOpenList] = useState(false)
     const [isOpenFriend, setIsOpenFriend] = useState(false)
     const [whichForm, setWhichForm] = useState('')
+    const [del, setDel] = useState(false)
+    const [editedList, setEditedList] = useState('')
+    const [isEditing, setIsEditing] = useState(false)
+    const [search, setSearch] = useState('')
+    const [filtered, setFiltered] = useState(lists)
+
+
+    const handleChangeSearch = e => {
+        setSearch(e.target.value)
+    }
+
+    const onSubmitSearch = e => {
+        e.preventDefault()
+        setFiltered(lists.filter(list=>list.name.toLowerCase().includes(search.toLowerCase())))
+        setSearch("")
+    }
+
+
+    const handleTouch = e => {
+        e.stopPropagation()
+        setTimeout(()=>{setDel(!del)
+        console.log('del', del)        
+        },1000)
+      }
 
     useEffect(()=>{
         if(Object.keys(user).length === 0){
@@ -28,7 +51,10 @@ const Dashboard = ({user, setUser, setCurrentFriend}) => {
         }
 
         axiosWithAuth().get('/api/lists')
-            .then(res=>setLists(res.data))
+            .then(res=>{
+                setLists(res.data)
+                setFiltered(res.data)
+            })
             .catch(err=>console.log(err))
 
         axiosWithAuth().get('/api/friends')
@@ -41,6 +67,10 @@ const Dashboard = ({user, setUser, setCurrentFriend}) => {
     }
     const handleChangeFriend = e => {
         setFriend(e.target.value)
+    }
+
+    const handleChangeEdit = e => {
+        setEditedList(e.target.value)
     }
 
     const onSubmit = () => {
@@ -66,6 +96,11 @@ const Dashboard = ({user, setUser, setCurrentFriend}) => {
             .catch(err=>console.log(err))
     }
 
+    const onEdit = (e) => {
+        e.preventDefault();
+        console.log(editedList)
+    }
+
     const deleteFriend = (id, name) => {
         console.log('id', id)
         axiosWithAuth().delete(`/api/friends/${id}`)
@@ -79,6 +114,7 @@ const Dashboard = ({user, setUser, setCurrentFriend}) => {
             .catch(err=>console.log(err))
     }
 
+
     return(
         <Container>
             <UserPanel>
@@ -88,18 +124,7 @@ const Dashboard = ({user, setUser, setCurrentFriend}) => {
                 </TopTitleDiv>
                 <ImgDiv>
                     <Img src={user.img_url}/>
-                    {/* <button onClick={()=>history.push('/profile')}>Edit Profile</button> */}
-                    {/* <button onClick={()=>setAdd(!add)}>Add a List</button>
-                    <button onClick={()=>setIsAddingFriend(!isAddingFriend)}>Add Friend</button> */}
                 </ImgDiv>
-                {add && <form onSubmit={onSubmit}>
-                    <input name="name" placeholder="name" onChange={handleChange} value={listName}/>
-                    <button>Add</button>
-                </form>}
-                {isAddingFriend && <form onSubmit={onSubmitFriend}>
-                    <input name="username" placeholder="username" onChange={handleChangeFriend} value={friend}/>
-                    <button>Add</button>
-                </form>}
                 <Menus>
                     <TitleDiv>
                         <Subtitle>My Lists</Subtitle>
@@ -112,10 +137,16 @@ const Dashboard = ({user, setUser, setCurrentFriend}) => {
                     <Lists>
                         {lists.map(list=>{
                             return(
-                                <FriendDiv>
-                                    <ListNames key={list.id}>{list.name}</ListNames>
-                                    <i className="fas fa-times-circle" onClick={()=>deleteList(list.id)}></i>
-                                </FriendDiv>
+                                <ListName  list={list} del={del} isEditing={isEditing} setIsEditing={setIsEditing} deleteList={deleteList} onEdit={onEdit} editedList={editedList} handleChangeEdit={handleChangeEdit} handleTouch={handleTouch}setDel={setDel}/>
+                                // <FriendDiv>
+                                //     <ListNames key={list.id} onTouchStart={handleTouch} onContextMenu={(e)=> e.preventDefault()}>{list.name}</ListNames>
+                                //     {del && <i className="fas fa-pen" onClick={()=>setIsEditing(!isEditing)}></i>}
+                                //     {del && <i className="fas fa-times-circle" onClick={()=>deleteList(list.id)}></i>}
+                                //     {isEditing && <form onSubmit={onEdit}> 
+                                //         <Input placeholder="name" name="name" value={editedList} onChange={handleChangeEdit}/>    
+                                //         <Button>Edit</Button> 
+                                //     </form>}
+                                // </FriendDiv>
 
                             )
                         })}
@@ -138,7 +169,9 @@ const Dashboard = ({user, setUser, setCurrentFriend}) => {
                                         setCurrentFriend(friend.friend_id)
                                         history.push(`/friend/${friend.friend_name}`)
                                     }} key={friend.friend_id}>{friend.friend_name}</ListNames>
+
                                     <i className="fas fa-times-circle" onClick={()=>deleteFriend(friend.friend_id, friend.friend_name)}></i>
+
                                 </FriendDiv>
                             )
                         })}
@@ -146,7 +179,17 @@ const Dashboard = ({user, setUser, setCurrentFriend}) => {
                 </Menus>
             </UserPanel>
             <ListContainer>
-                {lists.map(list=><List key={list.id} list={list} isFriend={false}/>)}
+                <SearchFormDiv>
+                    <Title>Search</Title>
+                    <SearchDiv>
+                        <Form onSubmit={onSubmitSearch}>
+                            <SearchBar onChange={handleChangeSearch} placeholder='search' value={search}/>
+                            <SubmitButton>Submit</SubmitButton>
+                        </Form>
+                    </SearchDiv>
+                    <Button onClick={()=>setFiltered(lists)}>See All</Button>
+                </SearchFormDiv>
+                {filtered.map(list=><List key={list.id} list={list} isFriend={false}/>)}
             </ListContainer>
         </Container>
     )
@@ -160,6 +203,14 @@ const Container = styled.div`
     @media(max-width: 970px){
         flex-direction: column;
     }
+`;
+
+const SearchFormDiv = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
 `;
 
 const TopTitleDiv = styled.div`
@@ -225,14 +276,21 @@ const Subtitle = styled.p`
 
 const ImgDiv = styled.div`
     margin-bottom: 15%;
+    width: 175px;
+    height: 175px;
+    // border: 1px solid red;
+    box-shadow: 0.3em 0.3em 1em rgba(0,0,0,0.3);
+    overflow: hidden;
+    border-radius: 100%;
 `;
 
 const Img = styled.img`
-    width: 175px;
-    border-radius: 100%;
+    // width: 175px;
+    // border-radius: 50%;
+    background-size: cover;
     background-position: 50% 50%;
-    height: 175px;
-    margin: 8% 0;
+    // height: 175px;
+    // margin: 8% 0;
 `;
 
 const Menus = styled.div`
@@ -244,6 +302,7 @@ const Menus = styled.div`
 
 const Lists = styled.div`
     margin: 5% 15%;
+    width: 100%;
 `;
 
 const ListNames = styled.p`
@@ -261,3 +320,37 @@ const FriendDiv = styled.div`
     // border: 1px solid red;
     padding: 0;
 `;
+
+const SearchBar = styled.input`
+    width: 100%;
+    margin-bottom: 6%;
+    padding: 4%;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+`;
+
+const Button = styled.button`
+    background: #f1f1f1;
+    padding: 2%;
+    border: 1px solid #111725;
+    border-radius: 5px;
+    color: #111725;
+    font-weight: 800;
+
+`;
+
+const SearchDiv = styled.div`
+    display: flex;
+    justify-content: center;
+`;
+
+const Form = styled.form`
+    display: flex;
+`;
+
+const SubmitButton = styled.button`
+    width: 30%;
+    margin-bottom: 6%;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    `;

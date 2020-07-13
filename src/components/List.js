@@ -12,13 +12,16 @@ const List = ({list, isFriend}) => {
     })
     const [isAdding, setIsAdding] = useState(false)
     const [btnText, setBtnText] = useState('Add an Item')
+    const [isEditingTitle, setIsEditingTitle] = useState(false)
+    const [title, setTitle] = useState(list.name)
+    
+
 
     useEffect(()=>{
         axiosWithAuth().get(`/api/items/${list.id}`)
             .then(res=>setItems(res.data))
             .catch(err=>console.log(err))
 
-        console.log('called')
     },[list])
 
     const handleChange = e => {
@@ -26,7 +29,21 @@ const List = ({list, isFriend}) => {
             ...newItem,
             [e.target.name]: e.target.value
         })
+    }
 
+    const handleTitleChange = e => {
+        setTitle(e.target.value)
+    }
+
+    const submitTitle = (e) => {
+        e.preventDefault()
+
+        let newList = {...list}
+        newList.name = title
+
+        axiosWithAuth().put(`/api/lists/${list.id}`, newList)
+            .then(res=>setIsEditingTitle(false))
+            .catch(err=>console.log(err))
     }
 
     const onSubmit = e => {
@@ -56,16 +73,22 @@ const List = ({list, isFriend}) => {
 
     return(
         <Container>
-            <Title>{list.name}</Title>
+            <div id={list.id} style={{height: '50px', width: '50px'}}></div>
+            <div style={{display: 'flex'}}>
+                <Title>{title}</Title>
+                <div style={{display:'flex', justifyContent:'center', alignItems:'center'}}>
+                    {!isFriend && <i className="fas fa-pen" style={{color: 'white',fontSize: '1rem'}} onClick={()=>setIsEditingTitle(!isEditingTitle)}></i>}
+                </div>
+            </div>
+            {isEditingTitle && <Form onSubmit={submitTitle}>
+                <EditInput onChange={handleTitleChange} value={title}/>
+                <EditButton>Submit</EditButton>
+            </Form>}
+            
             <ItemsDiv style={{flexDirection: 'column'}}>
 
             {items.map(item=>{
                 return <Item isFriend={isFriend} item={item} deleteItem={deleteItem}/>
-                // return <ItemsDiv key={item.item_name}>
-                //     <Amount>{`${item.quantity} x`}</Amount>
-                //     <ItemName>{item.item_name}</ItemName>
-                //     <i className="fas fa-times-circle" onClick={()=>deleteItem(item.item_id)}></i>
-                // </ItemsDiv>
             })}
                 {!isFriend && <Button style={{margin: '4% auto', width: '50%'}} onClick={()=>{
                     setIsAdding(!isAdding)
@@ -95,6 +118,7 @@ const Container = styled.div`
     flex-direction: column;
     width: 60%;
     margin: 0 auto;
+    margin-top: 10vh;
     @media(max-width: 970px){
         width: 80%;
     }
@@ -104,6 +128,7 @@ const Title = styled.h1`
     color: #f1f1f1;
     text-align: center;
     margin: 4% 0;
+    width: 90%;
 `;
 
 const ItemsDiv = styled.div`
@@ -117,13 +142,12 @@ const ItemsDiv = styled.div`
     padding: 4%;
 `;
 
-const Amount = styled.p`
-    width: 50%;
+const Form = styled.form`
+    display: flex;
+    // border: 1px solid red;
+    margin: 4% auto;
 `;
 
-const ItemName = styled.p`
-    width: 50%;
-`;
 
 const Input = styled.input`
     width: 100%;
@@ -132,6 +156,25 @@ const Input = styled.input`
     border-radius: 10px;
 `;
 
+const EditInput = styled.input`
+    width: 70%;
+    // margin-bottom: 6%;
+    padding: 4%;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+`;
+
+const EditButton = styled.button`
+    width: 30%;
+    background: #f1f1f1;
+    // padding: 2%;
+    border: 1px solid #111725;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    color: #111725;
+    font-weight: 800;
+
+`;
 const Button = styled.button`
     background: #f1f1f1;
     padding: 2%;

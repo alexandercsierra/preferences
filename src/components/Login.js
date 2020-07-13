@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import styled from 'styled-components'
 import axios from 'axios'
-import {useHistory, withRouter} from 'react-router-dom'
+import {useHistory} from 'react-router-dom'
 
 const Login = ({setCurrentUser}) => {
 
