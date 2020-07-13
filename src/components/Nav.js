@@ -22,15 +22,15 @@ const Nav = () => {
         
         <div>
             <MobileContainer>
-                <input type="checkbox" class="blue" id="menu" onChange={checked} onClick={()=>setChecked(!checked)}/>
+                <input type="checkbox" class="blue" id="menu" checked={checked} onClick={()=>setChecked(!checked)}/>
                 <label for="menu" class="icon">
                     <div class="menu"></div>
                 </label>
                 <MobileNav>
-                    <TheLinks to="/" exact={true}>HOME</TheLinks>
-                    <TheLinks to="/dashboard">DASHBOARD</TheLinks>
-                    <TheLinks to="/login">LOGIN</TheLinks>
-                    <TheLinks to="/signup">SIGNUP</TheLinks>
+                    <TheLinks to="/" exact={true} onClick={unCheck}>HOME</TheLinks>
+                    <TheLinks to="/dashboard" onClick={unCheck}>DASHBOARD</TheLinks>
+                    <TheLinks to="/login" onClick={unCheck}>LOGIN</TheLinks>
+                    <TheLinks to="/signup" onClick={unCheck}>SIGNUP</TheLinks>
                     <Signout onClick={()=>{
                         localStorage.clear();
                         history.push('/login')
