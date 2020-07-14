@@ -48,7 +48,11 @@ const List = ({list, isFriend, setLists, lists, setFiltered, filtered}) => {
                 let filteredLists = lists.filter(thelist=> thelist.id !== list.id)
                 let newList = [...filteredLists, res.data[0]]
                 setLists(newList)
-                setFiltered([...filtered, res.data[0]])
+
+                let filteredFilter = filtered.filter(thelist=> thelist.id !== list.id)
+                let newFilter = [...filteredFilter, res.data[0]]
+
+                setFiltered(newFilter)
             })
             .catch(err=>console.log(err))
     }
