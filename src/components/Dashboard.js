@@ -44,6 +44,7 @@ const Dashboard = ({user, setUser, setCurrentFriend}) => {
       }
 
     useEffect(()=>{
+        console.log('useEffect fired')
         if(Object.keys(user).length === 0){
             axiosWithAuth().get('/api/auth')
                 .then(res=>setUser(res.data[0]))
@@ -60,7 +61,7 @@ const Dashboard = ({user, setUser, setCurrentFriend}) => {
         axiosWithAuth().get('/api/friends')
             .then(res=>setFriends(res.data))
             .catch(err=>console.log(err))
-    },[lists])
+    },[])
 
     const handleChange = e => {
         setListName(e.target.value)
@@ -77,14 +78,15 @@ const Dashboard = ({user, setUser, setCurrentFriend}) => {
         // e.preventDefault()
         axiosWithAuth().post('/api/lists', {name: listName})
             .then(res=>{
-                // axiosWithAuth().get('/api/lists')
-                // .then(res=>{
-                //     console.log('list data', res.data)
-                //     setLists(res.data)
-                //     setListName('')
-                // })
-                // .catch(err=>console.log(err.message))
-                setListName('')
+                axiosWithAuth().get('/api/lists')
+                .then(res=>{
+                    console.log('list data', res.data)
+                    setLists(res.data)
+                    setFiltered(res.data)
+                    setListName('')
+                })
+                .catch(err=>console.log(err.message))
+                // setListName('')
                 })
             .catch(err=>console.log(err))
     }

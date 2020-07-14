@@ -7,6 +7,7 @@ export default {
     clientId: CLIENT_ID,
     issuer: ISSUER,
     redirectUri: 'https://extrapickles.vercel.app/implicit/callback',
+    // redirectUri: 'http://localhost:3000/implicit/callback',
     scopes: ['openid', 'profile', 'email'],
     pkce: true,
     disableHttpsCheck: OKTA_TESTING_DISABLEHTTPSCHECK,
