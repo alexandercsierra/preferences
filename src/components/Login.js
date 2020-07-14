@@ -49,15 +49,15 @@ const Login = ({setCurrentUser}) => {
 
     const onSubmit = e => {
         e.preventDefault()
-        axios.post('https://preferencesbackend.herokuapp.com/api/auth/login', user)
-        // axios.post('http://localhost:7000/api/auth/login', user)
-            .then(res=>{
-                console.log(res)
-                setCurrentUser(res.data.user)
-                localStorage.setItem('token', res.data.token)
-                history.push('/dashboard')
-            })
-            .catch(err=>console.log(err))
+        // axios.post('https://preferencesbackend.herokuapp.com/api/auth/login', user)
+        // // axios.post('http://localhost:7000/api/auth/login', user)
+        //     .then(res=>{
+        //         console.log(res)
+        //         setCurrentUser(res.data.user)
+        //         localStorage.setItem('token', res.data.token)
+        //         history.push('/dashboard')
+        //     })
+        //     .catch(err=>console.log(err))
     }
 
 

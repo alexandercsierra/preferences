@@ -78,13 +78,13 @@ const Dashboard = ({user, setUser, setCurrentFriend}) => {
         axiosWithAuth().post('/api/lists', {name: listName})
             .then(res=>{
                 axiosWithAuth().get('/api/lists')
-            .then(res=>{
-                setLists(res.data)
-                setListName('')
-            })
-            .catch(err=>console.log(err))
+                .then(res=>{
+                    setLists(res.data)
+                    setListName('')
+                })
+                .catch(err=>console.log(err.message))
 
-            })
+                })
             .catch(err=>console.log(err))
     }
 

@@ -24,8 +24,8 @@ const Signup = () => {
 
     const onSubmit = e => {
         e.preventDefault()
-        axios.post('https://preferencesbackend.herokuapp.com/api/auth/register', user)
-        // axios.post('http://localhost:7000/api/auth/register', user)
+        // axios.post('https://preferencesbackend.herokuapp.com/api/auth/register', user)
+        axios.post('http://localhost:7000/api/auth/register', user)
             .then(res=>{
                 console.log(res)
                 history.push('/login')
