@@ -1,17 +1,18 @@
-import React, {useEffect} from 'react'
+import React, {useState, useEffect} from 'react'
 import styled from 'styled-components'
 import axios from 'axios'
 import InstructionCard from './InstructionCard'
+import { useOktaAuth } from '@okta/okta-react';
+
+
 
 const Home = () => {
 
-    useEffect(()=>{
-        axios.get('https://preferencesbackend.herokuapp.com/')
-            .then(res=>console.log(res))
-            .catch(err=>console.log(err))
-    },[])
+    
 
-
+    
+    
+      
 
     return(
         <>
@@ -35,6 +36,7 @@ const Home = () => {
             </ImageDiv>
         </Header>
         <Section>
+        {/* <button id="login-button" primary onClick={login}>Login</button> */}
             <InstructionCard title={'Signup'}/>
             <InstructionCard title={'Create a List'}/>
             <InstructionCard title={'Add Friends'}/>
@@ -145,3 +147,4 @@ const CircleImg = styled.div`
     width: 45vh;
     border: 1px solid red;
 `;
+

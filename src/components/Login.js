@@ -1,9 +1,14 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import styled from 'styled-components'
 import axios from 'axios'
 import {useHistory} from 'react-router-dom'
+import { useOktaAuth } from '@okta/okta-react';
+
 
 const Login = ({setCurrentUser}) => {
+
+    const { authState, authService } = useOktaAuth();
+    const [userInfo, setUserInfo] = useState(null);
 
     const history = useHistory()
 
@@ -11,6 +16,28 @@ const Login = ({setCurrentUser}) => {
         username: '',
         password: ''
     })
+
+    useEffect(() => {
+        if (!authState.isAuthenticated) {
+          // When user isn't authenticated, forget any user info
+          setUserInfo(null);
+        } else {
+          authService.getUser().then((info) => {
+            setUserInfo(info);
+          });
+        }
+      }, [authState, authService]);
+
+
+      const login = async () => {
+        authService.login('/dashboard');
+      };
+
+      if (authState.isPending) {
+        return (
+          <div>Loading...</div>
+        );
+      }
 
 
     const handleChange = e => {
@@ -44,7 +71,7 @@ const Login = ({setCurrentUser}) => {
                 <Input name="username" placeholder="username" onChange={handleChange} value={user.username}/>
                 <Label>Password</Label>
                 <Input type="password" name="password" placeholder="password" onChange={handleChange} value={user.password}/>
-                <Button>LOGIN</Button>
+                <Button onClick={login}>LOGIN</Button>
             </Form>
         </Container>
     )
