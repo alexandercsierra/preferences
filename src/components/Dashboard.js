@@ -105,7 +105,13 @@ const Dashboard = ({user, setUser, setCurrentFriend}) => {
 
     const onEdit = (e) => {
         e.preventDefault();
-        console.log(editedList)
+        axiosWithAuth().get('/api/lists')
+            .then(res=>{
+                console.log('new lists', res.data)
+                setLists(res.data)
+                setFiltered(res.data)
+            })
+            .catch(err=>console.log(err))
     }
 
     const deleteFriend = (id, name) => {
@@ -196,7 +202,7 @@ const Dashboard = ({user, setUser, setCurrentFriend}) => {
                     </SearchDiv>
                     <Button onClick={()=>setFiltered(lists)}>See All</Button>
                 </SearchFormDiv>
-                {filtered.map(list=><List key={list.id} list={list} isFriend={false}/>)}
+                {filtered.map(list=><List key={list.id} list={list} isFriend={false} setLists={setLists} lists={lists} setFiltered={setFiltered} filtered={filtered}/>)}
             </ListContainer>
         </Container>
     )

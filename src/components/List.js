@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import {axiosWithAuth} from './utils/axiosWithAuth'
 import Item from './Item'
 
-const List = ({list, isFriend}) => {
+const List = ({list, isFriend, setLists, lists, setFiltered, filtered}) => {
 
     const [items, setItems] = useState([])
     const [newItem, setNewItem] = useState({
@@ -42,7 +42,14 @@ const List = ({list, isFriend}) => {
         newList.name = title
 
         axiosWithAuth().put(`/api/lists/${list.id}`, newList)
-            .then(res=>setIsEditingTitle(false))
+            .then(res=>{
+                setIsEditingTitle(false)
+                console.log('res.data', res.data)
+                let filteredLists = lists.filter(thelist=> thelist.id !== list.id)
+                let newList = [...filteredLists, res.data[0]]
+                setLists(newList)
+                setFiltered([...filtered, res.data[0]])
+            })
             .catch(err=>console.log(err))
     }
 
