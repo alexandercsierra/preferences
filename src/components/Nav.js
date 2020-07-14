@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import styled from 'styled-components'
 import {NavLink, useHistory, useLocation} from 'react-router-dom'
+import { useOktaAuth } from '@okta/okta-react';
 
 
 const Nav = () => {
@@ -17,6 +18,37 @@ const Nav = () => {
         unCheck()
     },[location])
 
+    const { authState, authService } = useOktaAuth();
+    const [userInfo, setUserInfo] = useState(null);
+    
+    
+
+    useEffect(() => {
+        if (!authState.isAuthenticated) {
+          // When user isn't authenticated, forget any user info
+          setUserInfo(null);
+        } else {
+          authService.getUser().then((info) => {
+            setUserInfo(info);
+          });
+        }
+      }, [authState, authService]);
+
+
+      const login = async () => {
+        authService.login('/dashboard');
+      };
+
+      const logout = async () => {
+        authService.logout('/');
+      };
+
+      if (authState.isPending) {
+        return (
+          <div>Loading...</div>
+        );
+      }
+
     return(
         
         <div>
@@ -28,14 +60,16 @@ const Nav = () => {
                 </label>
                 <MobileNav>
                     <img style={{width: '5vh', position: 'fixed', top: '0', right: '0', marginRight: '280px', marginTop: '1vh'}} src="https://freesvg.org/img/food-pickle.png"/>
-                    <h2 style={{color: 'black', position: 'fixed', top: '0', right: '0', marginRight: '10vh', marginTop: '1vh'}}>Extra Pickles</h2>
+                    <h2 style={{color: 'black', position: 'fixed', top: '0', right: '0', marginRight: '10vh', marginTop: '1vh'}} onClick={()=>{window.scrollTo({ top: 0, behavior: 'smooth' })}}>Extra Pickles</h2>
                     <TheLinks to="/" exact={true} onClick={unCheck}>HOME</TheLinks>
                     <TheLinks to="/dashboard" onClick={unCheck}>DASHBOARD</TheLinks>
-                    <TheLinks to="/login" onClick={unCheck}>LOGIN</TheLinks>
-                    <TheLinks to="/signup" onClick={unCheck}>SIGNUP</TheLinks>
+                    {/* <TheLinks to="/login" onClick={unCheck}>LOGIN</TheLinks> */}
+                    {/* <TheLinks to="/signup" onClick={unCheck}>SIGNUP</TheLinks> */}
+                    <Signout onClick={login}>LOGIN/SIGNUP</Signout>
                     <Signout onClick={()=>{
                         localStorage.clear();
-                        history.push('/login')
+                        logout();
+                        // history.push('/login')
                     }}>SIGNOUT</Signout>
                 </MobileNav>
             </MobileContainer>
@@ -50,8 +84,9 @@ const Nav = () => {
                 </div>
                 <TheLinks to="/" exact={true}>HOME</TheLinks>
                 {location !== "/" && <TheLinks to="/dashboard">DASHBOARD</TheLinks>}
-                <TheLinks to="/login">LOGIN</TheLinks>
-                {location === "/" && <TheLinks to="/signup">SIGNUP</TheLinks>}
+                {/* <TheLinks to="/login">LOGIN</TheLinks> */}
+                {/* {location === "/" && <TheLinks to="/signup">SIGNUP</TheLinks>} */}
+                <Signout onClick={login}>LOGIN/SIGNUP</Signout>
                 <Signout onClick={()=>{
                     localStorage.clear();
                     setChecked(false)

@@ -60,7 +60,7 @@ const Dashboard = ({user, setUser, setCurrentFriend}) => {
         axiosWithAuth().get('/api/friends')
             .then(res=>setFriends(res.data))
             .catch(err=>console.log(err))
-    },[])
+    },[lists])
 
     const handleChange = e => {
         setListName(e.target.value)
@@ -77,13 +77,14 @@ const Dashboard = ({user, setUser, setCurrentFriend}) => {
         // e.preventDefault()
         axiosWithAuth().post('/api/lists', {name: listName})
             .then(res=>{
-                axiosWithAuth().get('/api/lists')
-                .then(res=>{
-                    setLists(res.data)
-                    setListName('')
-                })
-                .catch(err=>console.log(err.message))
-
+                // axiosWithAuth().get('/api/lists')
+                // .then(res=>{
+                //     console.log('list data', res.data)
+                //     setLists(res.data)
+                //     setListName('')
+                // })
+                // .catch(err=>console.log(err.message))
+                setListName('')
                 })
             .catch(err=>console.log(err))
     }
@@ -92,7 +93,11 @@ const Dashboard = ({user, setUser, setCurrentFriend}) => {
         // e.preventDefault();
         console.log(friend)
         axiosWithAuth().post('/api/friends', {user: friend})
-            .then(res=>setFriends([...friends, {friend_name: friend}]))
+            .then(res=>{
+                setFriends([...friends, {friend_name: friend, friend_id: res.data.id}])
+                console.log('friend res', res)
+                setCurrentFriend(res.data.id)
+            })
             .catch(err=>console.log(err))
     }
 
@@ -127,7 +132,7 @@ const Dashboard = ({user, setUser, setCurrentFriend}) => {
                 </ImgDiv>
                 <Menus>
                     <TitleDiv>
-                        <Subtitle>My Lists</Subtitle>
+                        <Subtitle onClick={()=>{setDel(!del)}}>My Lists</Subtitle>
                         <i className="fas fa-plus-circle" onClick={()=>{
                             setWhichForm('list')
                             setIsOpenList(true)
@@ -137,7 +142,7 @@ const Dashboard = ({user, setUser, setCurrentFriend}) => {
                     <Lists>
                         {lists.map(list=>{
                             return(
-                                <ListName  list={list} del={del} isEditing={isEditing} setIsEditing={setIsEditing} deleteList={deleteList} onEdit={onEdit} editedList={editedList} handleChangeEdit={handleChangeEdit} handleTouch={handleTouch}setDel={setDel}/>
+                                <ListName  key={list.id} list={list} del={del} isEditing={isEditing} setIsEditing={setIsEditing} deleteList={deleteList} onEdit={onEdit} editedList={editedList} handleChangeEdit={handleChangeEdit} handleTouch={handleTouch}setDel={setDel}/>
                                 // <FriendDiv>
                                 //     <ListNames key={list.id} onTouchStart={handleTouch} onContextMenu={(e)=> e.preventDefault()}>{list.name}</ListNames>
                                 //     {del && <i className="fas fa-pen" onClick={()=>setIsEditing(!isEditing)}></i>}
@@ -164,11 +169,11 @@ const Dashboard = ({user, setUser, setCurrentFriend}) => {
                     <Lists>
                         {friends.map(friend=>{
                             return (
-                                <FriendDiv>
+                                <FriendDiv key={friend.id}>
                                     <ListNames onClick={()=>{
                                         setCurrentFriend(friend.friend_id)
-                                        history.push(`/friend/${friend.friend_name}`)
-                                    }} key={friend.friend_id}>{friend.friend_name}</ListNames>
+                                        history.push(`/friend/${friend.friend_id}`)
+                                    }}>{friend.friend_name}</ListNames>
 
                                     <i className="fas fa-times-circle" onClick={()=>deleteFriend(friend.friend_id, friend.friend_name)}></i>
 

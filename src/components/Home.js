@@ -2,15 +2,37 @@ import React, {useState, useEffect} from 'react'
 import styled from 'styled-components'
 import axios from 'axios'
 import InstructionCard from './InstructionCard'
+import {useHistory} from 'react-router-dom'
 import { useOktaAuth } from '@okta/okta-react';
 
 
 
 const Home = () => {
 
-    
+    const history = useHistory();
+    const { authState, authService } = useOktaAuth();
+    const [userInfo, setUserInfo] = useState(null);
+    useEffect(() => {
+        if (!authState.isAuthenticated) {
+          // When user isn't authenticated, forget any user info
+          setUserInfo(null);
+        } else {
+          authService.getUser().then((info) => {
+            setUserInfo(info);
+          });
+        }
+      }, [authState, authService]);
 
-    
+
+      const login = async () => {
+        authService.login('/dashboard');
+      };
+
+      if (authState.isPending) {
+        return (
+          <div>Loading...</div>
+        );
+      }
     
       
 
@@ -24,6 +46,7 @@ const Home = () => {
                 <Text>
                     You're on your way home at the end of a long day, and want to pick up something to eat. But it's not just you that you need to worry about. What does the spouse want from this place? What is it that the kids usually get? Never forget again. With Extra Pickles, all your friends' and family's favorite foods live in one place. Sign up, add a list then add a friend. Now your friends know what to get you from your favorite restaurants.
                 </Text>
+                <Button onClick={login}>Get Started Today</Button>
             </TextDiv>
             <ImageDiv>
                 <CircleDiv>
@@ -51,6 +74,12 @@ const Home = () => {
 }
 
 export default Home
+
+const Button = styled.button`
+    padding: 2%;
+    border-radius: 10px;
+    border: none;
+`;
 
 const Header = styled.header`
     display: flex;

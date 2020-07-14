@@ -8,9 +8,12 @@ const Profile = ({user, setUser}) => {
 
     const [profile, setProfile] = useState({
         name: user.name,
+        username: user.username,
         email: user.email,
         img_url: user.img_url
     })
+
+    const [username, setUsername] = useState('')
 
     const [img, setImg] = useState({
         img_url: user.img_url
@@ -30,6 +33,22 @@ const Profile = ({user, setUser}) => {
             img_url: e.target.value
         })
     }
+    const handleChangeUsername = e => {
+        setUsername(e.target.value)
+    }
+
+    const onSubmitUsername = e => {
+        e.preventDefault();
+        axiosWithAuth().put('/api/auth/username', {username})
+            .then(res=>{
+                setUser({
+                    ...user,
+                    username:res.data[0].username
+                })
+                setIsEditing(false)
+            })
+            .catch(err=>console.log(err))
+    }
 
     const onSubmit = e => {
         e.preventDefault();
@@ -48,22 +67,35 @@ const Profile = ({user, setUser}) => {
     return (
         <div style={{height: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
             <h1>Profile</h1>
-            <div style={{textAlign: 'center', margin: '4% 0'}}>
-                <h4>{user.name}</h4>
-                <p>{user.email}</p>
+            <div style={{textAlign: 'left', margin: '4% 0'}}>
+                <h4>Username: {user.username}</h4>
+                <p>Email: {user.email}</p>
             </div>
             <div style={{width: '50%'}}>
                 <img src={user.img_url}/>
             </div>
+
             <ButtonDiv>
-                <Button onClick={()=>setIsEditing(!isEditing)} style={{width: '100%'}}>Edit Profile Picture</Button>
+                <Button onClick={()=>setIsEditing(!isEditing)} style={{width: '100%'}}>Edit Profile</Button>
             </ButtonDiv>
+            <div>
+                {isEditing && <form onSubmit={onSubmitUsername}>
+                    {/* <input name="name" placeholder="name" onChange={handleChange} value={profile.name}/> */}
+                    {/* <input name="email" placeholder="email" onChange={handleChange} value={profile.email}/> */}
+                    <Input name="username" placeholder="new username" onChange={handleChangeUsername} value={username}/>
+                    <Button>Update Username</Button>
+                </form>}
+
+            </div>
+            {/* <ButtonDiv>
+                <Button onClick={()=>setIsEditing(!isEditing)} style={{width: '100%'}}>Edit Profile Picture</Button>
+            </ButtonDiv> */}
             <div>
                 {isEditing && <form onSubmit={onSubmit}>
                     {/* <input name="name" placeholder="name" onChange={handleChange} value={profile.name}/> */}
                     {/* <input name="email" placeholder="email" onChange={handleChange} value={profile.email}/> */}
                     <Input name="img_url" placeholder="img_url" onChange={handleChange} value={img.img_url}/>
-                    <Button>Save Changes</Button>
+                    <Button>Update Profile Picture</Button>
                 </form>}
             </div>
         </div>

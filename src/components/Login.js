@@ -7,15 +7,16 @@ import { useOktaAuth } from '@okta/okta-react';
 
 const Login = ({setCurrentUser}) => {
 
-    const { authState, authService } = useOktaAuth();
-    const [userInfo, setUserInfo] = useState(null);
-
-    const history = useHistory()
-
     const [user, setUser] = useState({
         username: '',
         password: ''
     })
+    const history = useHistory()
+
+    const { authState, authService } = useOktaAuth();
+    const [userInfo, setUserInfo] = useState(null);
+    
+    
 
     useEffect(() => {
         if (!authState.isAuthenticated) {

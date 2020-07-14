@@ -36,7 +36,7 @@ function App() {
           {/* <Route path="/dashboard">
             <Dashboard user={user}/>
           </Route> */}
-          <SecureRoute path="/dashboard" component={()=> <Dashboard user={user} setUser={setUser} setCurrentFriend={setCurrentFriend}/>}/> />
+          <SecureRoute path="/dashboard" component={()=> <Dashboard user={user} setUser={setUser} setCurrentFriend={setCurrentFriend}/>}/>
           {/* <PrivateRoute path='/dashboard' component={()=> <Dashboard user={user} setUser={setUser} setCurrentFriend={setCurrentFriend}/>}/> */}
           <SecureRoute path='/profile' component={()=> <Profile user={user} setUser={setUser}/>}/>
           <SecureRoute path='/friend/:name' component={()=> <FriendsList currentFriend={currentFriend}/>}/>

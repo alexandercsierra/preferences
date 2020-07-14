@@ -2,20 +2,24 @@ import React, {useState} from 'react'
 import styled from 'styled-components'
 import { HashLink as Link } from 'react-router-hash-link';
 
-const ListName = ({list, isEditing, setIsEditing, deleteList, onEdit, editedList, handleChangeEdit}) => {
+const ListName = ({list, isEditing, setIsEditing, deleteList, onEdit, editedList, handleChangeEdit, del}) => {
 
-    const [del, setDel] = useState(false)
+    // const [del, setDel] = useState(false)
 
-    const handleTouch = e => {
-        e.stopPropagation()
-        setTimeout(()=>{setDel(!del)
-        },1000)
-      }
+    // const handleTouch = e => {
+    //     e.stopPropagation()
+    //     setTimeout(()=>{setDel(!del)
+    //     },1000)
+    //   }
+
+    const scrollTo = () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
 
     return(
         <FriendDiv>
-            <TheLink to={`#${list.id}`} style={{margin: '0'}}>
-            <ListNames key={list.id} onTouchStart={handleTouch} onContextMenu={(e)=> e.preventDefault()}>{list.name}</ListNames></TheLink>
+            <TheLink smooth to={`#${list.id}`} style={{margin: '0'}}>
+            <ListNames key={list.id} onContextMenu={(e)=> e.preventDefault()}>{list.name}</ListNames></TheLink>
             {del && <i className="fas fa-times-circle" onClick={()=>deleteList(list.id)}></i>}
             {isEditing && <form onSubmit={onEdit}> 
                 <Input placeholder="name" name="name" value={editedList} onChange={handleChangeEdit}/>    
