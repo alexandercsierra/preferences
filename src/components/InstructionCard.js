@@ -1,12 +1,14 @@
 import React from 'react'
 import styled from 'styled-components'
+import {Link} from 'react-router-dom'
 
 const InstructionCard = ({title}) => {
     return(
         <OuterSquare>
-            <InnerSquare>
-                <Title>{title}</Title>
-            </InnerSquare>
+            {/* <InnerSquare> */}
+                {title === "Signup" && <Link to="/signup"><Title>{title}</Title></Link>}
+                {title !== "Signup" && <Title>{title}</Title>}
+            {/* </InnerSquare> */}
         </OuterSquare>
     )
 }
@@ -45,4 +47,6 @@ const InnerSquare = styled.div`
     }
 `;
 
-const Title = styled.h1``;
+const Title = styled.h1`
+    color: #043d12;
+`;

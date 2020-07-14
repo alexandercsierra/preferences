@@ -1,27 +1,43 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import styled from 'styled-components'
+import axios from 'axios'
 import InstructionCard from './InstructionCard'
 
 const Home = () => {
+
+    useEffect(()=>{
+        axios.get('https://preferencesbackend.herokuapp.com/')
+            .then(res=>console.log(res))
+            .catch(err=>console.log(err))
+    },[])
+
+
+
     return(
         <>
         <Header>
             <TextDiv>
                 <Title>
-                Your friends preferences all in one place
+                The food you love, just the way you like it.
                 </Title>
                 <Text>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam et ipsum quis urna bibendum dignissim. Maecenas vestibulum, massa non pharetra tincidunt, metus arcu consequat ligula, at placerat sem sapien cursus lorem. Aliquam nec metus sodales, pellentesque dui vitae, posuere leo. Vestibulum velit libero, ornare at efficitur condimentum, aliquam vitae nisi. Praesent facilisis quis ligula ut tempus. Sed nunc leo, eleifend a maximus eget, tristique interdum massa. Pellentesque id imperdiet massa, at rutrum nisl. Pellentesque massa massa, malesuada vitae metus eu, venenatis aliquam nulla. Nam efficitur volutpat odio eget tempor.
+                    You're on your way home at the end of a long day, and want to pick up something to eat. But it's not just you that you need to worry about. What does the spouse want from this place? What is it that the kids usually get? Never forget again. With Extra Pickles, all your friends' and family's favorite foods live in one place. Sign up, add a list then add a friend. Now your friends know what to get you from your favorite restaurants.
                 </Text>
             </TextDiv>
             <ImageDiv>
-                <CircleDiv><InnerCircle></InnerCircle></CircleDiv>
+                <CircleDiv>
+                    <ImgDiv>
+                        <Img src='https://images.unsplash.com/photo-1531947398206-60f8e97f34a2?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=700&q=80'/>
+                        {/* <Img style={{width: '25%'}} src='https://freesvg.org/img/food-pickle.png'/> */}
+                    </ImgDiv>
+                </CircleDiv>
+                
             </ImageDiv>
         </Header>
         <Section>
-            <InstructionCard title={'1. Signup'}/>
-            <InstructionCard title={'2. Create a List'}/>
-            <InstructionCard title={'3. Add Friends'}/>
+            <InstructionCard title={'Signup'}/>
+            <InstructionCard title={'Create a List'}/>
+            <InstructionCard title={'Add Friends'}/>
         </Section>
         <Section>
             <div style={{height: '500px', width: '500px'}}>
@@ -67,18 +83,36 @@ const ImageDiv = styled.div`
     justify-content: center;
     align-items: center;
     @media(max-width: 970px){
-        width: 80%;
+        width: 100%;
     }
 `;
 
-const CircleDiv = styled.div`
-    background: #f1f1f1;
-    height: 45vh;
-    width: 45vh;
+const ImgDiv = styled.div`
+    // margin-bottom: 15%;
+    width: 300px;
+    height: 300px;
+    // border: 15px solid #f1f1f1;
+    box-shadow: 0.3em 0.3em 1em rgba(0,0,0,0.3);
+    overflow: hidden;
     border-radius: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
+
+    
+`;
+
+
+const CircleDiv = styled.div`
+    background: #f1f1f1;
+    height: 350px;
+    width: 350px;
+    border-radius: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+
 `;
 
 const InnerCircle = styled.div`
@@ -96,4 +130,18 @@ const Section = styled.section`
     @media(max-width: 970px){
         flex-direction: column;
     }
+`;
+
+const Img = styled.img`
+    // border-radius: 100%;
+    // height: 45vh;
+    // width: 45vh;
+    background-size: cover;
+    background-position: 50% 50%;
+`;
+
+const CircleImg = styled.div`
+    height: 45vh;
+    width: 45vh;
+    border: 1px solid red;
 `;

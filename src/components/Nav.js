@@ -21,11 +21,14 @@ const Nav = () => {
         
         <div>
             <MobileContainer>
+                
                 <input type="checkbox" className="blue" id="menu" checked={checked} onClick={()=>setChecked(!checked)}/>
                 <label htmlFor="menu" className="icon">
                     <div className="menu"></div>
                 </label>
                 <MobileNav>
+                    <img style={{width: '5vh', position: 'fixed', top: '0', right: '0', marginRight: '280px', marginTop: '1vh'}} src="https://freesvg.org/img/food-pickle.png"/>
+                    <h2 style={{color: 'black', position: 'fixed', top: '0', right: '0', marginRight: '10vh', marginTop: '1vh'}}>Extra Pickles</h2>
                     <TheLinks to="/" exact={true} onClick={unCheck}>HOME</TheLinks>
                     <TheLinks to="/dashboard" onClick={unCheck}>DASHBOARD</TheLinks>
                     <TheLinks to="/login" onClick={unCheck}>LOGIN</TheLinks>
@@ -37,6 +40,14 @@ const Nav = () => {
                 </MobileNav>
             </MobileContainer>
             <Navbar>
+                <div style={{display: 'flex', justifyContent: 'flex-start', alignItems: 'center', paddingLeft:'4%'}}>
+                    <div style={{width: '10%'}}>
+                    <img style={{width: '100%'}} src="https://freesvg.org/img/food-pickle.png"/>
+
+                    </div>
+                    <h1 style={{marginLeft:'2%'}}>Extra Pickles</h1>
+
+                </div>
                 <TheLinks to="/" exact={true}>HOME</TheLinks>
                 {location !== "/" && <TheLinks to="/dashboard">DASHBOARD</TheLinks>}
                 <TheLinks to="/login">LOGIN</TheLinks>
@@ -62,7 +73,7 @@ const MobileContainer = styled.div`
 
 const Navbar = styled.div`
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
     @media(max-width: 970px){
         display: none;
     }

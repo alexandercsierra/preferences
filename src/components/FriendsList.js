@@ -88,28 +88,34 @@ const SearchDiv = styled.div`
 
 const Form = styled.form`
     display: flex;
+    width: 100%;
+    justify-content: center;
 `;
 
 const Input = styled.input`
-    width: 80%;
+    width: 70%;
     margin-bottom: 6%;
     padding: 4%;
     border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;
+    border: none;
 `;
 
 const SubmitButton = styled.button`
-    width: 30%;
+    width: 20%;
+    padding: 2%;
     margin-bottom: 6%;
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
-    `;
+    border: none;
+`;
 
 const Button = styled.button`
     margin: 0 auto;
     width: 25%;
     border-radius: 10px;
     font-size: 1rem;
+    border: none;
 `;
 
 const ListContainer = styled.div`
@@ -120,6 +126,7 @@ const Title = styled.h1`
     margin: 0 auto;
     margin-bottom: 4%;
     width: 70%;
+    text-shadow: 2px 4px 3px rgba(0,0,0,0.3);
 `;
 
 const ImgDiv = styled.div`

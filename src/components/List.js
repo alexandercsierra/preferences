@@ -129,6 +129,7 @@ const Title = styled.h1`
     text-align: center;
     margin: 4% 0;
     width: 90%;
+    text-shadow: 2px 4px 3px rgba(0,0,0,0.3);
 `;
 
 const ItemsDiv = styled.div`

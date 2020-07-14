@@ -322,11 +322,12 @@ const FriendDiv = styled.div`
 `;
 
 const SearchBar = styled.input`
-    width: 100%;
+    width: 70%;
     margin-bottom: 6%;
     padding: 4%;
     border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;
+    border: none;
 `;
 
 const Button = styled.button`
@@ -336,21 +337,27 @@ const Button = styled.button`
     border-radius: 5px;
     color: #111725;
     font-weight: 800;
+    border: none;
 
 `;
 
 const SearchDiv = styled.div`
     display: flex;
     justify-content: center;
+    width: 100%;
 `;
 
 const Form = styled.form`
     display: flex;
+    width: 100%;
+    justify-content: center;
 `;
 
 const SubmitButton = styled.button`
-    width: 30%;
+    width: 20%;
+    padding: 2%;
     margin-bottom: 6%;
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
+    border: none;
     `;

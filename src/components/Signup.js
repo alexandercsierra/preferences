@@ -94,6 +94,7 @@ const Input = styled.input`
     margin-bottom: 6%;
     padding: 4%;
     border-radius: 10px;
+    border: none;
 `;
 
 const Button = styled.button`
