@@ -180,7 +180,7 @@ const Dashboard = ({user, setUser, setCurrentFriend}) => {
                                 <FriendDiv key={friend.id}>
                                     <ListNames onClick={()=>{
                                         setCurrentFriend(friend.friend_id)
-                                        history.push(`/friend/${friend.friend_id}`)
+                                        history.push(`/friend/${friend.friend_name}`)
                                     }}>{friend.friend_name}</ListNames>
 
                                     <i className="fas fa-times-circle" onClick={()=>deleteFriend(friend.friend_id, friend.friend_name)}></i>
