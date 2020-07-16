@@ -15,7 +15,7 @@ const List = ({list, isFriend, setLists, lists, setFiltered, filtered}) => {
     const [isEditingTitle, setIsEditingTitle] = useState(false)
     const [title, setTitle] = useState(list.name)
     
-
+    const background = '#e6e6e6';
 
     useEffect(()=>{
         let isMounted = true;
@@ -87,7 +87,7 @@ const List = ({list, isFriend, setLists, lists, setFiltered, filtered}) => {
     }
 
     return(
-        <Container>
+        <Container >
             <div id={list.id} style={{height: '50px', width: '50px'}}></div>
             <div style={{display: 'flex'}}>
                 <Title>{title}</Title>
@@ -100,12 +100,12 @@ const List = ({list, isFriend, setLists, lists, setFiltered, filtered}) => {
                 <EditButton>Submit</EditButton>
             </Form>}
             
-            <ItemsDiv style={{flexDirection: 'column'}}>
+            <ItemsDiv style={{flexDirection: 'column', background: background}}>
 
             {items.map(item=>{
                 return <Item key={item.item_id} isFriend={isFriend} item={item} deleteItem={deleteItem}/>
             })}
-                {!isFriend && <Button style={{margin: '4% auto', width: '50%'}} onClick={()=>{
+                {!isFriend && <Button style={{margin: '4% auto', width: '50%', border: 'none', color: '#0b3d20', background: '#f1f1f1'}} onClick={()=>{
                     setIsAdding(!isAdding)
 
                     if(isAdding){
@@ -114,10 +114,12 @@ const List = ({list, isFriend, setLists, lists, setFiltered, filtered}) => {
                         setBtnText('Done adding')
                     }
                 }}>{btnText}</Button>}
-                {isAdding && <form onSubmit={onSubmit}> 
+                {isAdding && <form  onSubmit={onSubmit} style={{background: background}}> 
+                <label>Item</label>
                 <Input placeholder="name" name="name" value={newItem.name} onChange={handleChange}/>    
+                <label>Quantity</label>
                 <Input type="number" placeholder="quantity" name="quantity" value={newItem.quantity} onChange={handleChange}/>   
-                <Button>Add</Button> 
+                <Button style={{border: 'none', color: '#0b3d20', background: '#f1f1f1'}}>Add</Button> 
             </form>}
             </ItemsDiv>
         </Container>
@@ -170,6 +172,9 @@ const Input = styled.input`
     margin-bottom: 6%;
     padding: 4%;
     border-radius: 10px;
+    border: none;
+    background: #ffffff;
+    // border: 2px solid rgba(0,0,0,.5);
 `;
 
 const EditInput = styled.input`

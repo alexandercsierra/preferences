@@ -25,29 +25,29 @@ const ModalExample = (props) => {
         <div style={{maxWidth: '100%'}}>
 
             {whichForm === "list" && <Modal isOpen={isOpen} toggle={toggle} className={className}>
-                <ModalHeader toggle={toggle}>Add New List</ModalHeader>
-                <ModalBody>
+                <ModalHeader style={{background:'#31a05f', color: 'white'}} toggle={toggle}>Add New List</ModalHeader>
+                <ModalBody style={{background:'#31a05f'}}>
                     <Input type="text" placeholder="list name" onChange={handleChange} value={listName}/>
                 </ModalBody>
-                <ModalFooter>
-                    <Button color="primary" onClick={()=>{
+                <ModalFooter style={{background:'#31a05f'}}>
+                    <Button style={{background: '#31a05f', border: '1px solid white'}} onClick={()=>{
                         onSubmit()
                         toggle()
                     }}>Add</Button>{' '}
-                    <Button color="secondary" onClick={toggle}>Cancel</Button>
+                    <Button color="danger" onClick={toggle}>Cancel</Button>
                 </ModalFooter>
             </Modal>}
             {whichForm === "friend" && <Modal isOpen={isOpen} toggle={toggle} className={className}>
-                <ModalHeader toggle={toggle}>Add New Friend</ModalHeader>
-                <ModalBody>
+                <ModalHeader style={{background:'#31a05f', color: 'white'}}toggle={toggle}>Add New Friend</ModalHeader>
+                <ModalBody style={{background:'#31a05f'}}>
                     <Input type="text" placeholder="username of friend" onChange={handleChangeFriend} value={friend}/>
                 </ModalBody>
-                <ModalFooter>
-                    <Button color="primary" onClick={()=>{
+                <ModalFooter style={{background:'#31a05f'}}>
+                    <Button style={{background: '#31a05f', border: '1px solid white'}} onClick={()=>{
                         onSubmitFriend()
                         toggle()
                     }}>Follow Friend</Button>{' '}
-                    <Button color="secondary" onClick={toggle}>Cancel</Button>
+                    <Button color="danger" onClick={toggle}>Cancel</Button>
                 </ModalFooter>
             </Modal>}
         </div>
