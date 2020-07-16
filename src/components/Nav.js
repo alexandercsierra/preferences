@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react'
 import styled from 'styled-components'
 import {NavLink, useHistory, useLocation} from 'react-router-dom'
 import { useOktaAuth } from '@okta/okta-react';
-
+import ep from '../img/extrapickles.png'
 
 const Nav = () => {
     const history = useHistory()
@@ -59,8 +59,9 @@ const Nav = () => {
                     <div className="menu"></div>
                 </label>
                 <MobileNav>
-                    <img style={{width: '5vh', position: 'fixed', top: '0', right: '0', marginRight: '280px', marginTop: '1vh'}} src="https://freesvg.org/img/food-pickle.png"/>
-                    <h2 style={{color: 'black', position: 'fixed', top: '0', right: '0', marginRight: '10vh', marginTop: '1vh'}} onClick={()=>{window.scrollTo({ top: 0, behavior: 'smooth' })}}>Extra Pickles</h2>
+                    {/* <img style={{width: '5vh', position: 'fixed', top: '0', right: '0', marginRight: '280px', marginTop: '1vh'}} src="https://freesvg.org/img/food-pickle.png"/>
+                    <h2 style={{color: 'black', position: 'fixed', top: '0', right: '0', marginRight: '10vh', marginTop: '1vh'}} onClick={()=>{window.scrollTo({ top: 0, behavior: 'smooth' })}}>Extra Pickles</h2> */}
+                    <img style={{width: '40vh', position: 'fixed', top: '0', right: '0', marginRight: '50px', marginTop: '1vh'}} onClick={()=>{window.scrollTo({ top: 0, behavior: 'smooth' })}} src={ep} />
                     <TheLinks to="/" exact={true} onClick={unCheck}>HOME</TheLinks>
                     <TheLinks to="/dashboard" onClick={unCheck}>DASHBOARD</TheLinks>
                     {/* <TheLinks to="/login" onClick={unCheck}>LOGIN</TheLinks> */}
@@ -74,14 +75,15 @@ const Nav = () => {
                 </MobileNav>
             </MobileContainer>
             <Navbar>
-                <div style={{display: 'flex', justifyContent: 'flex-start', alignItems: 'center', paddingLeft:'4%'}}>
+                {/* <div style={{display: 'flex', justifyContent: 'flex-start', alignItems: 'center', paddingLeft:'4%'}}>
                     <div style={{width: '10%'}}>
                     <img style={{width: '100%'}} src="https://freesvg.org/img/food-pickle.png"/>
 
                     </div>
                     <h1 style={{marginLeft:'2%'}}>Extra Pickles</h1>
 
-                </div>
+                </div> */}
+                {/* <img src={ep} /> */}
                 <TheLinks to="/" exact={true}>HOME</TheLinks>
                 {location !== "/" && <TheLinks to="/dashboard">DASHBOARD</TheLinks>}
                 {/* <TheLinks to="/login">LOGIN</TheLinks> */}
