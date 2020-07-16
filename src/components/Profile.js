@@ -58,7 +58,7 @@ const Profile = ({user, setUser}) => {
     }
 
     return (
-        <div style={{height: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+        <div style={{minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
             <h1>Profile</h1>
             <div style={{textAlign: 'left', margin: '4% 0'}}>
                 <h4>Username: {user.username}</h4>

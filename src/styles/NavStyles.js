@@ -31,7 +31,7 @@ export const TheLinks = styled(NavLink)`
     font-weight: 700;
     @media(max-width: 970px){
         margin: 2% 4%; 
-        color: #111725;
+        color: #0B3D20;
     }
     `;
     
