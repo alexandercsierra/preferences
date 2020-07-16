@@ -91,7 +91,9 @@ const BannerDiv = styled.div`
     align-items: center;
     justify-content: center;
     @media(max-width: 970px){
-        display: none;
+        // display: none;
+        margin-top: 10vh;
+        width: 100%;
     }
 `;
 
@@ -131,7 +133,7 @@ const Header = styled.header`
     // margin-top: 2%;
     margin: 4% auto;
     @media(max-width: 970px){
-        flex-direction: column;
+        flex-direction: column-reverse;
     }
 `;
 
@@ -144,6 +146,8 @@ const TextDiv = styled.div`
     justify-content: flex-start;
     @media(max-width: 970px){
         width: 80%;
+        // border: 1px solid red;
+        margin-bottom: 10vh;
     }
     
 `;
@@ -153,7 +157,7 @@ const Title = styled.h1`
     font-size: 1.8rem;
     // text-align: center;
     @media(max-width: 970px){
-        margin-top: 10vh;
+        margin-top: 5vh;
     }
 `;
 
@@ -163,6 +167,10 @@ const Text = styled.p`
     // text-align: center;
     @media(max-width: 1500px){
         padding-right: 15%;
+
+    }
+    @media(max-width: 970px){
+        padding-right: 0;
     }
     
 `;
@@ -177,7 +185,7 @@ const ImageDiv = styled.div`
         justify-content: center;
         margin-right: 0;
         width: 100%;
-        margin-top: 15vh;
+        // margin-top: 15vh;
     }
 `;
 
@@ -197,6 +205,10 @@ const ImgDiv = styled.div`
     background-position: 50% 50%;
     transform: scaleY(-1);
     @media(max-width: 970px){
+        width: 300px;
+        height: 300px;
+    }
+    @media(max-width: 400px){
         width: 200px;
         height: 200px;
     }
@@ -213,6 +225,10 @@ const CircleDiv = styled.div`
     justify-content: center;
     align-items: center;
     @media(max-width: 970px){
+        width: 350px;
+        height: 350px;
+    }
+    @media(max-width: 400px){
         width: 250px;
         height: 250px;
     }
@@ -228,6 +244,7 @@ const Section = styled.section`
     @media(max-width: 970px){
         flex-direction: column;
     }
+    
 `;
 
 

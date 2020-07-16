@@ -50,7 +50,7 @@ const Nav = ({user}) => {
                     <div className="menu"></div>
                 </label>
                 <MobileNav>
-                    <img alt="a pickle with the text 'Extra Pickles'" style={{width: '30vh', position: 'fixed', top: '0', right: '0', marginRight: '60px', marginTop: '1vh'}} onClick={()=>{window.scrollTo({ top: 0, behavior: 'smooth' })}} src={ep} />
+                    {location !== "/" && <img alt="a pickle with the text 'Extra Pickles'" style={{width: '30vh', position: 'fixed', top: '0', right: '0', marginRight: '60px', marginTop: '1vh'}} onClick={()=>{window.scrollTo({ top: 0, behavior: 'smooth' })}} src={ep} />}
                     {location !== "/" && <ProfileImage image={user.img_url}/>}
                     <TheLinks to="/" exact={true} onClick={unCheck}>HOME</TheLinks>
                     <TheLinks to="/dashboard" onClick={unCheck}>DASHBOARD</TheLinks>
