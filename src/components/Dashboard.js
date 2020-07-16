@@ -1,10 +1,12 @@
 import React, {useState, useEffect} from 'react'
-import styled from 'styled-components'
 import List from './List'
 import ListName from './ListName'
 import Modal from './Modal'
 import {axiosWithAuth} from './utils/axiosWithAuth'
 import {useHistory} from 'react-router-dom'
+import ep from '../img/extrapickles.png'
+import {ImgDiv, Container, BannerDiv, Banner, SearchFormDiv, TopTitleDiv, TitleDiv, ListContainer, UserPanel, Title, Subtitle, Menus, Lists, ListNames, FriendDiv, SearchBar, Button, SearchDiv, Form, SubmitButton} from '../styles/DashboardStyles'
+
 
 
 const Dashboard = ({user, setUser, setCurrentFriend}) => {
@@ -44,24 +46,42 @@ const Dashboard = ({user, setUser, setCurrentFriend}) => {
       }
 
     useEffect(()=>{
-        console.log('useEffect fired')
+
+        let isMounted = true;
+
+
         if(Object.keys(user).length === 0){
             axiosWithAuth().get('/api/auth')
-                .then(res=>setUser(res.data[0]))
+                .then(res=>{
+                    if(isMounted){
+                        setUser(res.data[0])
+                    }
+                    
+                })
                 .catch(err=>console.log(err))
         }
 
         axiosWithAuth().get('/api/lists')
             .then(res=>{
-                setLists(res.data)
-                setFiltered(res.data)
+                if(isMounted){
+                    setLists(res.data)
+                    setFiltered(res.data)
+                }
+                
             })
             .catch(err=>console.log(err))
 
         axiosWithAuth().get('/api/friends')
-            .then(res=>setFriends(res.data))
+            .then(res=>{
+                if(isMounted){
+                    setFriends(res.data)
+                }
+            })
             .catch(err=>console.log(err))
-    },[])
+
+        return () => {isMounted = false}
+
+    },[user, setUser])
 
     const handleChange = e => {
         setListName(e.target.value)
@@ -130,16 +150,17 @@ const Dashboard = ({user, setUser, setCurrentFriend}) => {
 
     return(
         <Container>
+                <BannerDiv>
+                    <Banner src={ep}/>
+                </BannerDiv>
             <UserPanel>
                 <TopTitleDiv>
-                    <Title>Welcome {user.username}</Title>
                     <i className="fas fa-pen" onClick={()=>history.push('/profile')}></i>
+                    <Title>Welcome {user.username}</Title>
+                    <ImgDiv style={{backgroundImage: `url('${user.img_url}')`}}></ImgDiv>
                 </TopTitleDiv>
-                <ImgDiv>
-                    <Img src={user.img_url}/>
-                </ImgDiv>
                 <Menus>
-                    <TitleDiv>
+                    <TitleDiv style={{marginTop: '10%'}}>
                         <Subtitle onClick={()=>{setDel(!del)}}>My Lists</Subtitle>
                         <i className="fas fa-plus-circle" onClick={()=>{
                             setWhichForm('list')
@@ -177,7 +198,7 @@ const Dashboard = ({user, setUser, setCurrentFriend}) => {
                     <Lists>
                         {friends.map(friend=>{
                             return (
-                                <FriendDiv key={friend.id}>
+                                <FriendDiv key={friend.friend_id}>
                                     <ListNames onClick={()=>{
                                         setCurrentFriend(friend.friend_id)
                                         history.push(`/friend/${friend.friend_name}`)
@@ -209,168 +230,3 @@ const Dashboard = ({user, setUser, setCurrentFriend}) => {
 }
 
 export default Dashboard
-
-const Container = styled.div`
-    display: flex;
-    margin-bottom: 5%;
-    @media(max-width: 970px){
-        flex-direction: column;
-    }
-`;
-
-const SearchFormDiv = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-
-`;
-
-const TopTitleDiv = styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    @media(max-width: 970px){
-        margin-top: 10vh;
-    }
-`;
-
-const TitleDiv = styled.div`
-    display: flex;
-    // justify-content: center;
-    align-items: center;
-    width: 100%;
-`;
-
-const ListContainer = styled.div`
-    width: 60%;
-    height: 100vh;
-    @media(max-width: 970px){
-        width: 100%;
-        height: auto;
-        margin-bottom: 20%;
-    }
-`;
-
-const UserPanel = styled.div`
-    background: #f1f1f1;
-    color: #111725;
-    height: 100vh;
-    width: 40%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    @media(max-width: 970px){
-        width: 100%;
-        height: auto;
-    }
-`;
-
-const Title = styled.h1`
-    font-size: 1.5rem;
-    text-align: center;
-    margin: 6% 0;
-    // border: 1px solid red;
-    @media(max-width: 1000px){
-        font-size: 1rem;
-    }
-    @media(max-width: 630px){
-        font-size: 1.5rem;
-    }
-`;
-
-const Subtitle = styled.p`
-    font-size: 1.5rem;
-    align-self: flex-start;
-    margin: 2%;
-    font-weight: 700;
-`;
-
-const ImgDiv = styled.div`
-    margin-bottom: 15%;
-    width: 175px;
-    height: 175px;
-    // border: 1px solid red;
-    box-shadow: 0.3em 0.3em 1em rgba(0,0,0,0.3);
-    overflow: hidden;
-    border-radius: 100%;
-`;
-
-const Img = styled.img`
-    // width: 175px;
-    // border-radius: 50%;
-    background-size: cover;
-    background-position: 50% 50%;
-    // height: 175px;
-    // margin: 8% 0;
-`;
-
-const Menus = styled.div`
-    display: flex;
-    justify-content: flex-start;
-    flex-direction: column;
-    width: 75%;
-`;
-
-const Lists = styled.div`
-    margin: 5% 15%;
-    width: 100%;
-`;
-
-const ListNames = styled.p`
-    // border: 1px solid red;
-    font-size: 1.2rem;
-    width: 80%;
-    padding: 4%;
-    margin: 0;
-`;
-
-const FriendDiv = styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    // border: 1px solid red;
-    padding: 0;
-`;
-
-const SearchBar = styled.input`
-    width: 70%;
-    margin-bottom: 6%;
-    padding: 4%;
-    border-top-left-radius: 10px;
-    border-bottom-left-radius: 10px;
-    border: none;
-`;
-
-const Button = styled.button`
-    background: #f1f1f1;
-    padding: 2%;
-    border: 1px solid #111725;
-    border-radius: 5px;
-    color: #111725;
-    font-weight: 800;
-    border: none;
-
-`;
-
-const SearchDiv = styled.div`
-    display: flex;
-    justify-content: center;
-    width: 100%;
-`;
-
-const Form = styled.form`
-    display: flex;
-    width: 100%;
-    justify-content: center;
-`;
-
-const SubmitButton = styled.button`
-    width: 20%;
-    padding: 2%;
-    margin-bottom: 6%;
-    border-top-right-radius: 10px;
-    border-bottom-right-radius: 10px;
-    border: none;
-    `;

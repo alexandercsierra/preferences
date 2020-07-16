@@ -31,7 +31,8 @@ const FriendsList = ({currentFriend}) => {
                     .catch(err=>console.log(err))
             })
             .catch(err=>console.log(err))
-    },[])
+
+    },[currentFriend])
 
     const handleChange = e => {
         setSearch(e.target.value)

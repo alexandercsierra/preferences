@@ -7,7 +7,6 @@ import Login from './components/Login'
 import Dashboard from './components/Dashboard'
 import Profile from './components/Profile'
 import FriendsList from './components/FriendsList'
-import PrivateRoute from './components/PrivateRoute'
 import styled from 'styled-components'
 import {Route} from 'react-router-dom'
 import { Security, SecureRoute, LoginCallback } from '@okta/okta-react';
@@ -19,10 +18,14 @@ function App() {
   const [user, setUser] = useState({})
   const [currentFriend, setCurrentFriend] = useState(0);
 
+
+
+
   return (
       <Security {...config.oidc}>
         <Container>
-          <Nav/>
+          <Nav user={user}/>
+
           <Route exact path="/">
             <Home/>
           </Route>
@@ -33,11 +36,7 @@ function App() {
           <Route path="/login">
             <Login setCurrentUser={setUser}/>
           </Route>
-          {/* <Route path="/dashboard">
-            <Dashboard user={user}/>
-          </Route> */}
           <SecureRoute path="/dashboard" component={()=> <Dashboard user={user} setUser={setUser} setCurrentFriend={setCurrentFriend}/>}/>
-          {/* <PrivateRoute path='/dashboard' component={()=> <Dashboard user={user} setUser={setUser} setCurrentFriend={setCurrentFriend}/>}/> */}
           <SecureRoute path='/profile' component={()=> <Profile user={user} setUser={setUser}/>}/>
           <SecureRoute path='/friend/:name' component={()=> <FriendsList currentFriend={currentFriend}/>}/>
         </Container>
@@ -66,22 +65,3 @@ background-attachment: fixed;
 background-size: cover;
 
 `;
-
-
-
-
-
-// const App = () => (
-//     <Security {...config.oidc}>
-//       <Navbar />
-//       <Container text style={{ marginTop: '7em' }}>
-//         <Route path="/" exact component={Home} />
-//         <Route path="/implicit/callback" component={LoginCallback} />
-//         <SecureRoute path="/profile" component={Profile} />
-//       </Container>
-//     </Security>
-// );
-// export default App;
-
-// const Container = styled.div``;
-

@@ -5,10 +5,8 @@ import {Link} from 'react-router-dom'
 const InstructionCard = ({title}) => {
     return(
         <OuterSquare>
-            {/* <InnerSquare> */}
                 {title === "Signup" && <Link to="/signup"><Title>{title}</Title></Link>}
                 {title !== "Signup" && <Title>{title}</Title>}
-            {/* </InnerSquare> */}
         </OuterSquare>
     )
 }
@@ -29,21 +27,6 @@ const OuterSquare = styled.div`
     }
     @media(max-width: 550px){
         width: 80%;
-    }
-`;
-
-const InnerSquare = styled.div`
-    background: #111725;
-    height: 27vh;
-    width: 27vh;
-    // width: 10%;
-    border-radius: 20px;
-    display: flex;
-    justify-content: center;
-    // align-items: center;
-    @media(max-width: 970px){
-        width: 90%;
-        margin: 4% auto;
     }
 `;
 

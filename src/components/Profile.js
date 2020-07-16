@@ -1,17 +1,10 @@
 import React, {useState, useEffect} from 'react'
 import {axiosWithAuth} from './utils/axiosWithAuth'
-import styled from 'styled-components'
+import {ButtonDiv, Button, Input} from '../styles/ProfileStyles'
 
 const Profile = ({user, setUser}) => {
 
     const [isEditing, setIsEditing] = useState(false);
-
-    const [profile, setProfile] = useState({
-        name: user.name,
-        username: user.username,
-        email: user.email,
-        img_url: user.img_url
-    })
 
     const [username, setUsername] = useState('')
 
@@ -25,7 +18,7 @@ const Profile = ({user, setUser}) => {
                 .then(res=>setUser(res.data[0]))
                 .catch(err=>console.log(err))
         }
-    },[])
+    },[user, setUser])
 
 
     const handleChange = e => {
@@ -72,7 +65,7 @@ const Profile = ({user, setUser}) => {
                 <p>Email: {user.email}</p>
             </div>
             <div style={{width: '50%'}}>
-                <img src={user.img_url}/>
+                <img alt="current profile pic" src={user.img_url}/>
             </div>
 
             <ButtonDiv>
@@ -104,27 +97,27 @@ const Profile = ({user, setUser}) => {
 
 export default Profile
 
-const ButtonDiv = styled.div`
-    width: 30%;
-    margin: 4% 0;
-    @media(max-width: 700px){
-        width: 50%;
-    }
-`;
+// const ButtonDiv = styled.div`
+//     width: 30%;
+//     margin: 4% 0;
+//     @media(max-width: 700px){
+//         width: 50%;
+//     }
+// `;
 
-const Button = styled.button`
-    background: #f1f1f1;
-    padding: 2%;
-    border: 1px solid #111725;
-    border-radius: 5px;
-    color: #111725;
-    font-weight: 800;
+// const Button = styled.button`
+//     background: #f1f1f1;
+//     padding: 2%;
+//     border: 1px solid #111725;
+//     border-radius: 5px;
+//     color: #111725;
+//     font-weight: 800;
 
-`;
+// `;
 
-const Input = styled.input`
-    width: 100%;
-    margin-bottom: 6%;
-    padding: 4%;
-    border-radius: 10px;
-`;
+// const Input = styled.input`
+//     width: 100%;
+//     margin-bottom: 6%;
+//     padding: 4%;
+//     border-radius: 10px;
+// `;

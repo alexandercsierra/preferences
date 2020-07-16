@@ -1,7 +1,5 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState} from 'react'
 import styled from 'styled-components'
-import axios from 'axios'
-import {useHistory} from 'react-router-dom'
 import { useOktaAuth } from '@okta/okta-react';
 
 
@@ -11,23 +9,22 @@ const Login = ({setCurrentUser}) => {
         username: '',
         password: ''
     })
-    const history = useHistory()
 
     const { authState, authService } = useOktaAuth();
-    const [userInfo, setUserInfo] = useState(null);
+    // const [userInfo, setUserInfo] = useState(null);
     
-    
+    // console.log(userInfo)
 
-    useEffect(() => {
-        if (!authState.isAuthenticated) {
-          // When user isn't authenticated, forget any user info
-          setUserInfo(null);
-        } else {
-          authService.getUser().then((info) => {
-            setUserInfo(info);
-          });
-        }
-      }, [authState, authService]);
+    // useEffect(() => {
+    //     if (!authState.isAuthenticated) {
+    //       // When user isn't authenticated, forget any user info
+    //       setUserInfo(null);
+    //     } else {
+    //       authService.getUser().then((info) => {
+    //         setUserInfo(info);
+    //       });
+    //     }
+    //   }, [authState, authService]);
 
 
       const login = async () => {

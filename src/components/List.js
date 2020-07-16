@@ -18,10 +18,15 @@ const List = ({list, isFriend, setLists, lists, setFiltered, filtered}) => {
 
 
     useEffect(()=>{
+        let isMounted = true;
         axiosWithAuth().get(`/api/items/${list.id}`)
-            .then(res=>setItems(res.data))
+            .then(res=>{
+                if(isMounted){
+                    setItems(res.data)
+                }
+            })
             .catch(err=>console.log(err))
-
+        return () => {isMounted = false}
     },[list])
 
     const handleChange = e => {
@@ -44,7 +49,6 @@ const List = ({list, isFriend, setLists, lists, setFiltered, filtered}) => {
         axiosWithAuth().put(`/api/lists/${list.id}`, newList)
             .then(res=>{
                 setIsEditingTitle(false)
-                console.log('res.data', res.data)
                 let filteredLists = lists.filter(thelist=> thelist.id !== list.id)
                 let newList = [...filteredLists, res.data[0]]
                 setLists(newList)
@@ -99,7 +103,7 @@ const List = ({list, isFriend, setLists, lists, setFiltered, filtered}) => {
             <ItemsDiv style={{flexDirection: 'column'}}>
 
             {items.map(item=>{
-                return <Item isFriend={isFriend} item={item} deleteItem={deleteItem}/>
+                return <Item key={item.item_id} isFriend={isFriend} item={item} deleteItem={deleteItem}/>
             })}
                 {!isFriend && <Button style={{margin: '4% auto', width: '50%'}} onClick={()=>{
                     setIsAdding(!isAdding)

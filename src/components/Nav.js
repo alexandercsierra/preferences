@@ -1,10 +1,11 @@
 import React, {useState, useEffect} from 'react'
-import styled from 'styled-components'
-import {NavLink, useHistory, useLocation} from 'react-router-dom'
+import {useHistory, useLocation} from 'react-router-dom'
 import { useOktaAuth } from '@okta/okta-react';
-import ep from '../img/extrapickles.png'
+import ep from '../img/extrapickles.png';
+import ProfileImage from './ProfileImage'
+import {MobileContainer, Navbar, MobileNav, TheLinks, Signout, Button} from '../styles/NavStyles'
 
-const Nav = () => {
+const Nav = ({user}) => {
     const history = useHistory()
     const location = useLocation().pathname
 
@@ -19,20 +20,21 @@ const Nav = () => {
     },[location])
 
     const { authState, authService } = useOktaAuth();
-    const [userInfo, setUserInfo] = useState(null);
+    // const [userInfo, setUserInfo] = useState(null);
     
     
 
-    useEffect(() => {
-        if (!authState.isAuthenticated) {
-          // When user isn't authenticated, forget any user info
-          setUserInfo(null);
-        } else {
-          authService.getUser().then((info) => {
-            setUserInfo(info);
-          });
-        }
-      }, [authState, authService]);
+    // useEffect(() => {
+    //     if (!authState.isAuthenticated) {
+    //       // When user isn't authenticated, forget any user info
+    //       setUserInfo(null);
+    //     } else {
+    //       authService.getUser().then((info) => {
+    //         setUserInfo(info);
+    //       });
+    //     }
+    //     console.log('userinfo', userInfo)
+    //   }, [authState, authService]);
 
 
       const login = async () => {
@@ -52,48 +54,35 @@ const Nav = () => {
     return(
         
         <div>
-            <MobileContainer>
+            <MobileContainer style={{border: '1px solid white'}}>
                 
-                <input type="checkbox" className="blue" id="menu" checked={checked} onClick={()=>setChecked(!checked)}/>
+                <input type="checkbox" className="blue" id="menu" onChange={()=>setChecked(!checked)} checked={checked} onClick={()=>setChecked(!checked)}/>
                 <label htmlFor="menu" className="icon">
                     <div className="menu"></div>
                 </label>
                 <MobileNav>
-                    {/* <img style={{width: '5vh', position: 'fixed', top: '0', right: '0', marginRight: '280px', marginTop: '1vh'}} src="https://freesvg.org/img/food-pickle.png"/>
-                    <h2 style={{color: 'black', position: 'fixed', top: '0', right: '0', marginRight: '10vh', marginTop: '1vh'}} onClick={()=>{window.scrollTo({ top: 0, behavior: 'smooth' })}}>Extra Pickles</h2> */}
-                    <img style={{width: '40vh', position: 'fixed', top: '0', right: '0', marginRight: '50px', marginTop: '1vh'}} onClick={()=>{window.scrollTo({ top: 0, behavior: 'smooth' })}} src={ep} />
+                    <img alt="a pickle with the text 'Extra Pickles'" style={{width: '30vh', position: 'fixed', top: '0', right: '0', marginRight: '60px', marginTop: '1vh'}} onClick={()=>{window.scrollTo({ top: 0, behavior: 'smooth' })}} src={ep} />
+                    {location !== "/" && <ProfileImage image={user.img_url}/>}
                     <TheLinks to="/" exact={true} onClick={unCheck}>HOME</TheLinks>
                     <TheLinks to="/dashboard" onClick={unCheck}>DASHBOARD</TheLinks>
-                    {/* <TheLinks to="/login" onClick={unCheck}>LOGIN</TheLinks> */}
-                    {/* <TheLinks to="/signup" onClick={unCheck}>SIGNUP</TheLinks> */}
                     <Signout onClick={login}>LOGIN/SIGNUP</Signout>
                     <Signout onClick={()=>{
                         localStorage.clear();
                         logout();
-                        // history.push('/login')
                     }}>SIGNOUT</Signout>
                 </MobileNav>
             </MobileContainer>
             <Navbar>
-                {/* <div style={{display: 'flex', justifyContent: 'flex-start', alignItems: 'center', paddingLeft:'4%'}}>
-                    <div style={{width: '10%'}}>
-                    <img style={{width: '100%'}} src="https://freesvg.org/img/food-pickle.png"/>
 
-                    </div>
-                    <h1 style={{marginLeft:'2%'}}>Extra Pickles</h1>
-
-                </div> */}
-                {/* <img src={ep} /> */}
                 <TheLinks to="/" exact={true}>HOME</TheLinks>
                 {location !== "/" && <TheLinks to="/dashboard">DASHBOARD</TheLinks>}
-                {/* <TheLinks to="/login">LOGIN</TheLinks> */}
-                {/* {location === "/" && <TheLinks to="/signup">SIGNUP</TheLinks>} */}
-                <Signout onClick={login}>LOGIN/SIGNUP</Signout>
-                <Signout onClick={()=>{
+                <Signout onClick={login}>LOGIN</Signout>
+                <Button>GET STARTED</Button>
+                {location !=="/" && <Signout onClick={()=>{
                     localStorage.clear();
                     setChecked(false)
                     history.push('/login')
-                }}>SIGNOUT</Signout>
+                }}>SIGNOUT</Signout>}
             </Navbar>
         </div>
     )
@@ -101,45 +90,66 @@ const Nav = () => {
 
 export default Nav
 
-const MobileContainer = styled.div`
-    display: none;
-    @media(max-width: 970px){
-        display: block;
-    }
-`;
+// const MobileContainer = styled.div`
+//     display: none;
+//     @media(max-width: 970px){
+//         display: block;
+//     }
+// `;
 
-const Navbar = styled.div`
-    display: flex;
-    justify-content: space-between;
-    @media(max-width: 970px){
-        display: none;
-    }
-`;
+// const Navbar = styled.div`
+//     display: flex;
+//     justify-content: flex-end;
+//     padding-top: 20px;
+//     padding-right: 20px;
+//     @media(max-width: 970px){
+//         display: none;
+//     }
+// `;
 
-const MobileNav = styled.nav`
-    display: flex;
-    // justify-content: flex-end;
-    flex-direction: column;
-`;
+// const MobileNav = styled.nav`
+//     display: flex;
+//     // justify-content: flex-end;
+//     flex-direction: column;
+// `;
 
-const TheLinks = styled(NavLink)`
-    color: white;
-    margin: 2% 4%; 
-    text-decoration: none;
-    font-weight: 700;
-    @media(max-width: 970px){
-        color: #111725;
-    }
-    `;
+// const TheLinks = styled(NavLink)`
+//     color: white;
+//     margin: 1% 2%; 
+//     text-decoration: none;
+//     font-weight: 700;
+//     @media(max-width: 970px){
+//         margin: 2% 4%; 
+//         color: #111725;
+//     }
+//     `;
     
-    const Signout = styled.p`
-    color: white;
-    margin: 2% 4%; 
-    text-decoration: none;
-    cursor: pointer;
-    font-weight: 700;
-    @media(max-width: 970px){
-        color: #111725;
-    }
-`;
+//     const Signout = styled.p`
+//     color: white;
+//     margin: 1% 2%; 
+//     text-decoration: none;
+//     cursor: pointer;
+//     font-weight: 700;
+//     @media(max-width: 970px){
+//         margin: 2% 4%; 
+//         color: #111725;
+//     }
+// `;
+
+// const Button = styled.button`
+//     width: 10%;
+//     // padding: 2%;
+//     font-family: 'Modak', cursive;
+//     font-size: 20px;
+//     // text-shadow: 2px 4px 3px rgba(0,0,0,0.3);
+//     -webkit-text-stroke: 1.5px #0B3D20; 
+//     border-radius: 10px;
+//     border: 5px solid white;
+//     // background white;
+//     background: #0B3D20;
+//     color: white;
+//     @media(max-width: 510px){
+//         width: 65%;
+//     }
+// `;
 

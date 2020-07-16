@@ -1,29 +1,25 @@
-import React, {useState, useEffect} from 'react'
+import React from 'react'
 import styled from 'styled-components'
-import axios from 'axios'
 import InstructionCard from './InstructionCard'
-import {useHistory} from 'react-router-dom'
 import { useOktaAuth } from '@okta/okta-react';
 import ep from '../img/extrapickles.png'
 
 
 const Home = () => {
 
-    const circle_image = 'https://images.unsplash.com/photo-1526230427044-d092040d48dc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80';
 
-    const history = useHistory();
     const { authState, authService } = useOktaAuth();
-    const [userInfo, setUserInfo] = useState(null);
-    useEffect(() => {
-        if (!authState.isAuthenticated) {
-          // When user isn't authenticated, forget any user info
-          setUserInfo(null);
-        } else {
-          authService.getUser().then((info) => {
-            setUserInfo(info);
-          });
-        }
-      }, [authState, authService]);
+    // const [userInfo, setUserInfo] = useState(null);
+    // useEffect(() => {
+    //     if (!authState.isAuthenticated) {
+    //       // When user isn't authenticated, forget any user info
+    //       setUserInfo(null);
+    //     } else {
+    //       authService.getUser().then((info) => {
+    //         setUserInfo(info);
+    //       });
+    //     }
+    //   }, [authState, authService]);
 
 
       const login = async () => {
@@ -90,7 +86,7 @@ export default Home
 
 const BannerDiv = styled.div`
     margin: 0 auto;
-    width: 80%;
+    width: 60%;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -106,7 +102,7 @@ const Banner = styled.img`
 const BtnDiv = styled.div`
     width: 100%;
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     // border: 1px solid red;
 `;
@@ -114,13 +110,15 @@ const BtnDiv = styled.div`
 const Button = styled.button`
     width: 30%;
     padding: 2%;
-    font-family: 'Modak', cursive;
-
+    // font-family: 'Modak', cursive;
+    font-size: 1.2rem;
+    // text-shadow: 2px 4px 3px rgba(0,0,0,0.3);
+    -webkit-text-stroke: 1px #0B3D20; 
     border-radius: 10px;
     border: 5px solid white;
-    // background white;
-    background: #0B3D20;
-    color: white;
+    background white;
+    // background: #0B3D20;
+    color: #0B3D20;
     @media(max-width: 510px){
         width: 65%;
     }
@@ -130,6 +128,8 @@ const Header = styled.header`
     display: flex;
     justify-content: center;
     align-items: center;
+    // margin-top: 2%;
+    margin: 4% auto;
     @media(max-width: 970px){
         flex-direction: column;
     }
@@ -137,7 +137,11 @@ const Header = styled.header`
 
 const TextDiv = styled.div`
     width: 50%;
-    padding: 4%;
+    // padding: 4%;
+    // padding: 10%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
     @media(max-width: 970px){
         width: 80%;
     }
@@ -145,21 +149,33 @@ const TextDiv = styled.div`
 `;
 
 const Title = styled.h1`
-    margin-bottom: 10%;
+    margin-bottom: 5%;
     font-size: 1.8rem;
+    // text-align: center;
     @media(max-width: 970px){
         margin-top: 10vh;
     }
 `;
 
-const Text = styled.p``;
+const Text = styled.p`
+    // padding: 4% 15%;
+    padding-right: 35%;
+    // text-align: center;
+    @media(max-width: 1500px){
+        padding-right: 15%;
+    }
+    
+`;
 
 const ImageDiv = styled.div`
     width: 50%;
     display: flex;
-    justify-content: center;
+    justify-content: flex-end;
     align-items: center;
+    margin-right: 6%;
     @media(max-width: 970px){
+        justify-content: center;
+        margin-right: 0;
         width: 100%;
         margin-top: 15vh;
     }
@@ -179,7 +195,11 @@ const ImgDiv = styled.div`
     background-image: url('https://images.unsplash.com/photo-1545823140-2b6f44dd8ddb?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80');
     background-size: cover;
     background-position: 50% 50%;
-    
+    transform: scaleY(-1);
+    @media(max-width: 970px){
+        width: 200px;
+        height: 200px;
+    }
 `;
 
 
@@ -192,17 +212,13 @@ const CircleDiv = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-
+    @media(max-width: 970px){
+        width: 250px;
+        height: 250px;
+    }
 
 `;
 
-const InnerCircle = styled.div`
-    // background: #111725;
-    background: #0B3D20;
-    height: 35vh;
-    width: 35vh;
-    border-radius: 100%;
-`;
 
 const Section = styled.section`
     display: flex;
@@ -214,17 +230,4 @@ const Section = styled.section`
     }
 `;
 
-const Img = styled.img`
-    // border-radius: 100%;
-    // height: 45vh;
-    // width: 45vh;
-    background-size: 00%;
-    background-position: 50% 50%;
-`;
-
-const CircleImg = styled.div`
-    height: 45vh;
-    width: 45vh;
-    border: 1px solid red;
-`;
 

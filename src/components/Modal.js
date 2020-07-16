@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Input} from 'reactstrap';
 
 const ModalExample = (props) => {
@@ -16,7 +16,7 @@ const ModalExample = (props) => {
     } = props;
   
 
-    const [unmountOnClose, setUnmountOnClose] = useState(true);
+    // const [unmountOnClose, setUnmountOnClose] = useState(true);
   
     const toggle = () => setIsOpen(!isOpen);
 
@@ -24,7 +24,7 @@ const ModalExample = (props) => {
     return (
         <div style={{maxWidth: '100%'}}>
 
-            {whichForm === "list" && <Modal isOpen={isOpen} toggle={toggle} className={className} unmountOnClose={unmountOnClose}>
+            {whichForm === "list" && <Modal isOpen={isOpen} toggle={toggle} className={className}>
                 <ModalHeader toggle={toggle}>Add New List</ModalHeader>
                 <ModalBody>
                     <Input type="text" placeholder="list name" onChange={handleChange} value={listName}/>
@@ -37,7 +37,7 @@ const ModalExample = (props) => {
                     <Button color="secondary" onClick={toggle}>Cancel</Button>
                 </ModalFooter>
             </Modal>}
-            {whichForm === "friend" && <Modal isOpen={isOpen} toggle={toggle} className={className} unmountOnClose={unmountOnClose}>
+            {whichForm === "friend" && <Modal isOpen={isOpen} toggle={toggle} className={className}>
                 <ModalHeader toggle={toggle}>Add New Friend</ModalHeader>
                 <ModalBody>
                     <Input type="text" placeholder="username of friend" onChange={handleChangeFriend} value={friend}/>

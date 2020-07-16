@@ -1,20 +1,9 @@
-import React, {useState} from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import { HashLink as Link } from 'react-router-hash-link';
 
 const ListName = ({list, isEditing, setIsEditing, deleteList, onEdit, editedList, handleChangeEdit, del}) => {
 
-    // const [del, setDel] = useState(false)
-
-    // const handleTouch = e => {
-    //     e.stopPropagation()
-    //     setTimeout(()=>{setDel(!del)
-    //     },1000)
-    //   }
-
-    const scrollTo = () => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
 
     return(
         <FriendDiv>
