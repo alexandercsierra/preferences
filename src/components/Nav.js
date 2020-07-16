@@ -71,7 +71,7 @@ const Nav = ({user}) => {
                 {location !=="/" && <Signout onClick={()=>{
                     localStorage.clear();
                     setChecked(false)
-                    history.push('/login')
+                    logout();                
                 }}>SIGNOUT</Signout>}
             </Navbar>
         </div>
