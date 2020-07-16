@@ -48,8 +48,7 @@ const FriendsList = ({currentFriend}) => {
     return (
         <Container>
             <UserDiv>
-                <ImgDiv>
-                    <Img src={friendPic}/>
+                <ImgDiv style={{backgroundImage: `url('${friendPic}')`}}>
                 </ImgDiv>
                 <Title>{name}'s Lists</Title>
             </UserDiv>
@@ -138,9 +137,7 @@ const ImgDiv = styled.div`
     box-shadow: 0.3em 0.3em 1em rgba(0,0,0,0.3);
     overflow: hidden;
     border-radius: 100%;
-`;
-
-const Img = styled.img`
     background-size: cover;
     background-position: 50% 50%;
+
 `;

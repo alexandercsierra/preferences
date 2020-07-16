@@ -4,6 +4,8 @@ import { useOktaAuth } from '@okta/okta-react';
 import ep from '../img/extrapickles.png';
 import ProfileImage from './ProfileImage'
 import {MobileContainer, Navbar, MobileNav, TheLinks, Signout, Button} from '../styles/NavStyles'
+import Loader from './Loader'
+
 
 const Nav = ({user}) => {
     const history = useHistory()
@@ -20,21 +22,6 @@ const Nav = ({user}) => {
     },[location])
 
     const { authState, authService } = useOktaAuth();
-    // const [userInfo, setUserInfo] = useState(null);
-    
-    
-
-    // useEffect(() => {
-    //     if (!authState.isAuthenticated) {
-    //       // When user isn't authenticated, forget any user info
-    //       setUserInfo(null);
-    //     } else {
-    //       authService.getUser().then((info) => {
-    //         setUserInfo(info);
-    //       });
-    //     }
-    //     console.log('userinfo', userInfo)
-    //   }, [authState, authService]);
 
 
       const login = async () => {
@@ -47,7 +34,9 @@ const Nav = ({user}) => {
 
       if (authState.isPending) {
         return (
-          <div>Loading...</div>
+          <div style={{height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+              <Loader/>
+          </div>
         );
       }
 
@@ -65,7 +54,8 @@ const Nav = ({user}) => {
                     {location !== "/" && <ProfileImage image={user.img_url}/>}
                     <TheLinks to="/" exact={true} onClick={unCheck}>HOME</TheLinks>
                     <TheLinks to="/dashboard" onClick={unCheck}>DASHBOARD</TheLinks>
-                    <Signout onClick={login}>LOGIN/SIGNUP</Signout>
+                    {location !== "/profile" && <TheLinks to="/profile" onClick={unCheck}>EDIT PROFILE</TheLinks>}
+                    {location !=="/dashboard" && location !=="/profile" && <Signout onClick={login}>LOGIN/SIGNUP</Signout>}
                     <Signout onClick={()=>{
                         localStorage.clear();
                         logout();
@@ -89,67 +79,3 @@ const Nav = ({user}) => {
 }
 
 export default Nav
-
-// const MobileContainer = styled.div`
-//     display: none;
-//     @media(max-width: 970px){
-//         display: block;
-//     }
-// `;
-
-// const Navbar = styled.div`
-//     display: flex;
-//     justify-content: flex-end;
-//     padding-top: 20px;
-//     padding-right: 20px;
-//     @media(max-width: 970px){
-//         display: none;
-//     }
-// `;
-
-// const MobileNav = styled.nav`
-//     display: flex;
-//     // justify-content: flex-end;
-//     flex-direction: column;
-// `;
-
-// const TheLinks = styled(NavLink)`
-//     color: white;
-//     margin: 1% 2%; 
-//     text-decoration: none;
-//     font-weight: 700;
-//     @media(max-width: 970px){
-//         margin: 2% 4%; 
-//         color: #111725;
-//     }
-//     `;
-    
-//     const Signout = styled.p`
-//     color: white;
-//     margin: 1% 2%; 
-//     text-decoration: none;
-//     cursor: pointer;
-//     font-weight: 700;
-//     @media(max-width: 970px){
-//         margin: 2% 4%; 
-//         color: #111725;
-//     }
-// `;
-
-// const Button = styled.button`
-//     width: 10%;
-//     // padding: 2%;
-//     font-family: 'Modak', cursive;
-//     font-size: 20px;
-//     // text-shadow: 2px 4px 3px rgba(0,0,0,0.3);
-//     -webkit-text-stroke: 1.5px #0B3D20; 
-//     border-radius: 10px;
-//     border: 5px solid white;
-//     // background white;
-//     background: #0B3D20;
-//     color: white;
-//     @media(max-width: 510px){
-//         width: 65%;
-//     }
-// `;
-

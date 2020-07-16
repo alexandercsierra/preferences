@@ -1,6 +1,7 @@
 import React, {useState} from 'react'
 import styled from 'styled-components'
 import { useOktaAuth } from '@okta/okta-react';
+import Loader from './Loader'
 
 
 const Login = ({setCurrentUser}) => {
@@ -33,7 +34,9 @@ const Login = ({setCurrentUser}) => {
 
       if (authState.isPending) {
         return (
-          <div>Loading...</div>
+            <div style={{height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+            <Loader/>
+        </div>
         );
       }
 
