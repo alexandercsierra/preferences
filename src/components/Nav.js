@@ -66,8 +66,8 @@ const Nav = ({user}) => {
 
                 <TheLinks to="/" exact={true}>HOME</TheLinks>
                 {location !== "/" && <TheLinks to="/dashboard">DASHBOARD</TheLinks>}
-                <Signout onClick={login}>LOGIN</Signout>
-                <Button>GET STARTED</Button>
+                {location === "/" && <Signout onClick={login}>LOGIN</Signout>}
+                {location === "/" && <Button>GET STARTED</Button>}
                 {location !=="/" && <Signout onClick={()=>{
                     localStorage.clear();
                     setChecked(false)
